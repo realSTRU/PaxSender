@@ -9,6 +9,8 @@ public class Articulo
 
     public int SuplidorId { get; set; }
 
+    public int CategoriaId { get; set; }
+
     public string? Descripcion { get; set; }
 
     public double Costo { get; set; }
