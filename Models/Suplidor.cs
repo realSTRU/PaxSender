@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
+namespace PaxSender.Models
+{
 public class Suplidor
 {
     [Key]
@@ -33,4 +35,5 @@ public class Suplidor
 
 
 
+}
 }

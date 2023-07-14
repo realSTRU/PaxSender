@@ -1,4 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+//using PaxSender.DAL;
+using PaxSender.BLL;
+using PaxSender.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var ConStr = builder.Configuration.GetConnectionString("ConStr");//conexion string
+
+builder.Services.AddDbContext<Contexto>(con =>
+  con.UseSqlite(ConStr)  // contexto
+);
+
+builder.Services.AddTransient<SuplidorBLL>();// bll
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
