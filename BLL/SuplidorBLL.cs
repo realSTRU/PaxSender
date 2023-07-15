@@ -16,8 +16,8 @@ public  class SuplidorBLL
         _contexto = contexto;
     }
 
-    public bool Existe(int personaId){
-        return _contexto.Suplidor.Any(o => o.SuplidorId == personaId);
+    public bool Existe(int categoriaId){
+        return _contexto.Suplidor.Any(o => o.SuplidorId == categoriaId);
     }
 
     private bool Insertar(Suplidor suplidor){

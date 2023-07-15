@@ -16,6 +16,7 @@ builder.Services.AddDbContext<Contexto>(con =>
 );
 
 builder.Services.AddTransient<SuplidorBLL>();// bll
+builder.Services.AddTransient<CategoriaBLL>();// bll
 
 
 // Add services to the container.
