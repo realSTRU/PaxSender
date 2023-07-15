@@ -38,7 +38,16 @@ public class Articulo
         this.Fecha_Entrada= DateTime.Now;
     }
 
-    public enum ESTADOS
+   
+
+
+
+
+
+
+}
+
+ public enum ESTADOS
     {
         ACTIVO,
 
@@ -49,11 +58,3 @@ public class Articulo
         PERECEDERO
     }
 
-
-
-
-
-
-
-
-}
