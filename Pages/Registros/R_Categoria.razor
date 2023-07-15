@@ -1,0 +1,144 @@
+@page "/R_Categoria"
+
+@page "/R_Categoria/{CategoriaId:int}"
+@inject CategoriaBLL categoriaBLL
+
+@* Registro de categoria de productos *@
+@inject AuthenticationStateProvider Authentication
+
+<EditForm Model="categoria" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="card shadow-lg">
+
+        <div class="card ">
+
+            <div class="card-header ">
+
+                <h3 class="card-title">
+                    Registro Categoria
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-truck" viewBox="0 0 16 16">
+                     </svg>
+                </h3>
+            </div>
+
+            <div class="card-body">
+                <hr>
+                
+ @*CategoriaId*@
+                
+                <div class="sml col-3">
+                        <label>SuplidorID</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="categoria.CategoriaId" class="form-control " />
+                            <div class="input-group-append">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-lg btn-primary"
+                    @onclick="Buscar">Buscar</button>
+
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+        @*...................... Descripcion ......................*@
+
+                <div class="row">
+
+                    <div class="sml col-3">
+                        <label>Nombre Categoria</label>
+                        <InputText @bind-Value="categoria.Descripcion" placeholder="Descripcion Categoria" class="form-control" />
+                        <ValidationMessage For="@(() => categoria.CategoriaId)" />
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+          
+  @*...................... Botones ......................*@
+
+            <div class="card-footer">
+                <div class="form-group text-left" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo" title="Nuevo categoria">
+                        <span class="oi oi-file"> Nuevo</span>
+                    </button>
+
+                    <button type="submit" class="btn btn-lg btn-success" title="Guardar categoria">
+                        <span class="oi oi-document"> Guardar</span>
+                    </button>
+
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar" title="Eliminar categoria">
+                        <span class="oi oi-trash"> Eliminar</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+                
+  </div>
+ 
+</EditForm>
+
+@code {
+
+  [Parameter]
+  public int CategoriaId { get; set; }
+
+  private Categoria categoria = new Categoria();
+  public List<Categoria> lista { get; set; } = new List<Categoria>();
+
+  protected override void OnInitialized()
+  {
+    categoria.CategoriaId = 0;
+    if (CategoriaId > 0)
+    {
+      categoria.CategoriaId = CategoriaId;
+      Buscar();
+    }
+  }
+  void Buscar()
+  {
+    var encontrado = categoriaBLL.Buscar(categoria.CategoriaId);
+    if (encontrado != null)
+    {
+      categoria = encontrado;
+      this.categoria = encontrado;
+      // notification.ShowNotification("Registro encontrado", NotificationSeverity.Success);
+    }
+    else
+    {
+      //otification.ShowNotification("Registro no encontrado", NotificationSeverity.Warning);
+    }
+  }
+  void Nuevo()
+  {
+    this.categoria = new Categoria();
+    //notificacion.ShowNotification("Nueva plantilla.", NotificationSeverity.Success);
+
+  }
+  void Guardar()
+  {
+    if (categoriaBLL.Guardar(categoria))
+    {
+      Nuevo();
+      // notificacion.ShowNotification("Guardado correctamente.");
+    }
+    else
+    {
+      // notificacion.ShowNotification("No fue guardado.", NotificationSeverity.Error);
+    }
+  }
+  void Eliminar()
+  {
+    if (categoriaBLL.Eliminar(categoria))
+    {
+      Nuevo();
+      //notification.ShowNotification("Eliminado correctamente.");
+    }
+    else if (categoria.CategoriaId == 0)
+    {
+      // notification.ShowNotification("No fue eliminado.", NotificationSeverity.Error);
+    }
+  }
+}
