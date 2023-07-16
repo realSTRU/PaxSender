@@ -22,6 +22,7 @@ builder.Services.AddDbContext<Contexto>(con =>
 builder.Services.AddTransient<SuplidorBLL>();// bll
 builder.Services.AddTransient<CategoriaBLL>();// bll
 builder.Services.AddTransient<ClienteBLL>();//bll
+builder.Services.AddTransient<ArticuloBLL>();//bll
 builder.Services.AddScoped<NotificationService>();//ServicioDeNotificaciones
 
 

@@ -12,8 +12,26 @@ public class Contexto: DbContext
     public DbSet<Pedido> Pedido {get; set;}
 
     public DbSet<Articulo> Articulo{get; set;}
-    public Contexto (DbContextOptions <Contexto> options): base(options) 
+    public Contexto (DbContextOptions <Contexto> options): base(options) {}
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<Categoria>().HasData(
+            new Categoria
+            {
+                CategoriaId = 1,
+                Descripcion = "Inmuebles"
+            },
+             new Categoria
+            {
+                CategoriaId = 2,
+                Descripcion = "Alimentos"
+            },
+             new Categoria
+            {
+                CategoriaId = 3,
+                Descripcion = "Ropa"
+            }
+        );
     }
 }
