@@ -1,0 +1,17 @@
+@page "/C_Categorias"
+
+@inject CategoriaBLL categoriaBLL
+<PageTitle>Consulta Categorias.</PageTitle>
+
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+    AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+    Data= "categoriaBLL.GetList(o => true)" TItem="Categoria" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+        <Columns>
+            
+            <RadzenDataGridColumn TItem="Categoria" Property="CategoriaId" Title="CategoriaId#"/>
+            <RadzenDataGridColumn TItem="Categoria" Property="Descripcion" Title="Descripcion"/>
+    
+        </Columns>
+
+    </RadzenDataGrid>

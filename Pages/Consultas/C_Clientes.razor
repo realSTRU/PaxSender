@@ -1,0 +1,39 @@
+
+@page "/C_Clientes"
+
+@inject ClienteBLL clienteBLL
+
+
+<PageTitle>Consulta Clientes.</PageTitle>
+
+
+<style>
+    .datagrid-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .datagrid-container .rz-datagrid .rz-datagrid-body .rz-datagrid-column:nth-child(1) {
+        width: 100px;
+    }
+</style>
+
+<div class="datagrid-container">
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+        AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+        Data="clienteBLL.GetList(o => true)" TItem="Cliente" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+        ShowPagingSummary="true">
+
+        <Columns>
+            <RadzenDataGridColumn TItem="Cliente" Property="ClienteId" Title="ClienteId#" />
+            <RadzenDataGridColumn TItem="Cliente" Property="Nombre" Title="Nombre" />
+            <RadzenDataGridColumn TItem="Cliente" Property="Direccion" Title="Direccion" />
+            <RadzenDataGridColumn TItem="Cliente" Property="Correo" Title="Correo" />
+            <RadzenDataGridColumn TItem="Cliente" Property="Celular" Title="Celular" />
+            <RadzenDataGridColumn TItem="Cliente" Property="Telefono" Title="Telefono" />
+            <RadzenDataGridColumn TItem="Cliente" Property="RNC" Title="RNC" />
+            <RadzenDataGridColumn TItem="Cliente" Property="Fecha_Registro" Title="Fecha Registro" />
+        </Columns>
+
+    </RadzenDataGrid>
+</div>

@@ -1,0 +1,40 @@
+
+@page "/C_Articulos"
+
+@inject ArticuloBLL articuloBLL
+
+
+<PageTitle>Consulta Articulo.</PageTitle>
+
+
+<style>
+    .datagrid-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .datagrid-container .rz-datagrid .rz-datagrid-body .rz-datagrid-column:nth-child(1) {
+        width: 100px;
+    }
+</style>
+
+<div class="datagrid-container">
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+        AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+        Data="articuloBLL.GetList(o => true)" TItem="Articulo" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+        ShowPagingSummary="true">
+
+        <Columns>
+            <RadzenDataGridColumn TItem="Articulo" Property="ArticuloId" Title="ArticuloId#" />
+            <RadzenDataGridColumn TItem="Articulo" Property="Descripcion" Title="Descripcion" />
+            <RadzenDataGridColumn TItem="Articulo" Property="SuplidorId" Title="Suplidor" />
+            <RadzenDataGridColumn TItem="Articulo" Property="CategoriaId" Title="Categoria" />
+            <RadzenDataGridColumn TItem="Articulo" Property="Costo" Title="Costo" />
+            <RadzenDataGridColumn TItem="Articulo" Property="Precio" Title="Precio" />
+            <RadzenDataGridColumn TItem="Articulo" Property="Existencia" Title="Existencia" />
+            <RadzenDataGridColumn TItem="Articulo" Property="Estado" Title="Estado" />
+            <RadzenDataGridColumn TItem="Articulo" Property="Fecha_Caducidad" Title="Fecha Caducidad" />
+        </Columns>
+
+    </RadzenDataGrid>
+</div>

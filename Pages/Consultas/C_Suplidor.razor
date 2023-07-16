@@ -1,0 +1,39 @@
+
+@page "/C_Suplidores"
+
+@inject SuplidorBLL suplidorBLL
+
+
+<PageTitle>Consulta Suplidor.</PageTitle>
+
+
+<style>
+    .datagrid-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .datagrid-container .rz-datagrid .rz-datagrid-body .rz-datagrid-column:nth-child(1) {
+        width: 100px;
+    }
+</style>
+
+<div class="datagrid-container">
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+        AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+        Data="suplidorBLL.GetList(o => true)" TItem="Suplidor" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+        ShowPagingSummary="true">
+
+        <Columns>
+            <RadzenDataGridColumn TItem="Suplidor" Property="SuplidorId" Title="SuplidorId#" />
+            <RadzenDataGridColumn TItem="Suplidor" Property="Nombre" Title="Nombre" />
+            <RadzenDataGridColumn TItem="Suplidor" Property="Direccion" Title="Direccion" />
+            <RadzenDataGridColumn TItem="Suplidor" Property="Correo" Title="Correo" />
+            <RadzenDataGridColumn TItem="Suplidor" Property="Celular" Title="Celular" />
+            <RadzenDataGridColumn TItem="Suplidor" Property="Telefono" Title="Telefono" />
+            <RadzenDataGridColumn TItem="Suplidor" Property="RNC" Title="RNC" />
+            <RadzenDataGridColumn TItem="Suplidor" Property="Fecha_Registro" Title="Fecha Registro" />
+        </Columns>
+
+    </RadzenDataGrid>
+</div>
