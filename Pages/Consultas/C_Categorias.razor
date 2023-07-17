@@ -3,15 +3,30 @@
 @inject CategoriaBLL categoriaBLL
 <PageTitle>Consulta Categorias.</PageTitle>
 
-<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
-    AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-    Data= "categoriaBLL.GetList(o => true)" TItem="Categoria" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
 
-        <Columns>
+
+<RadzenCard>
+    <RadzenFieldset>
+        <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="emergency" class="me-1" /><b>Consulta Categorias.</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+            AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+            Data= "categoriaBLL.GetList(o => true)" TItem="Categoria" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+                <Columns>
+                    
+                    <RadzenDataGridColumn TItem="Categoria" Property="CategoriaId" Title="CategoriaId#"/>
+                    <RadzenDataGridColumn TItem="Categoria" Property="Descripcion" Title="Descripcion"/>
             
-            <RadzenDataGridColumn TItem="Categoria" Property="CategoriaId" Title="CategoriaId#"/>
-            <RadzenDataGridColumn TItem="Categoria" Property="Descripcion" Title="Descripcion"/>
-    
-        </Columns>
+                </Columns>
 
-    </RadzenDataGrid>
+            </RadzenDataGrid>
+        </ChildContent>
+    </RadzenFieldset>
+</RadzenCard>
+
+

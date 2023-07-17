@@ -10,7 +10,6 @@ using PaxSender.BLL;
 using PaxSender.Data;
 using Radzen.Blazor;
 using Radzen;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var ConStr = builder.Configuration.GetConnectionString("ConStr");//conexion string
@@ -24,6 +23,7 @@ builder.Services.AddTransient<CategoriaBLL>();// bll
 builder.Services.AddTransient<ClienteBLL>();//bll
 builder.Services.AddTransient<ArticuloBLL>();//bll
 builder.Services.AddScoped<NotificationService>();//ServicioDeNotificaciones
+builder.Services.AddScoped<DialogService>();
 
 
 

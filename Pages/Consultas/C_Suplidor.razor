@@ -18,22 +18,39 @@
     }
 </style>
 
-<div class="datagrid-container">
-    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
-        AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-        Data="suplidorBLL.GetList(o => true)" TItem="Suplidor" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
-        ShowPagingSummary="true">
 
-        <Columns>
-            <RadzenDataGridColumn TItem="Suplidor" Property="SuplidorId" Title="SuplidorId#" />
-            <RadzenDataGridColumn TItem="Suplidor" Property="Nombre" Title="Nombre" />
-            <RadzenDataGridColumn TItem="Suplidor" Property="Direccion" Title="Direccion" />
-            <RadzenDataGridColumn TItem="Suplidor" Property="Correo" Title="Correo" />
-            <RadzenDataGridColumn TItem="Suplidor" Property="Celular" Title="Celular" />
-            <RadzenDataGridColumn TItem="Suplidor" Property="Telefono" Title="Telefono" />
-            <RadzenDataGridColumn TItem="Suplidor" Property="RNC" Title="RNC" />
-            <RadzenDataGridColumn TItem="Suplidor" Property="Fecha_Registro" Title="Fecha Registro" />
-        </Columns>
+<RadzenCard>
+    <RadzenFieldset>
+        <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="emergency" class="me-1" /><b>Consulta Suplidores.</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+            
+            <div class="datagrid-container">
+                <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+                    AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                    Data="suplidorBLL.GetList(o => true)" TItem="Suplidor" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+                    ShowPagingSummary="true">
 
-    </RadzenDataGrid>
-</div>
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Suplidor" Property="SuplidorId" Title="SuplidorId#" />
+                        <RadzenDataGridColumn TItem="Suplidor" Property="Nombre" Title="Nombre" />
+                        <RadzenDataGridColumn TItem="Suplidor" Property="Direccion" Title="Direccion" />
+                        <RadzenDataGridColumn TItem="Suplidor" Property="Correo" Title="Correo" />
+                        <RadzenDataGridColumn TItem="Suplidor" Property="Celular" Title="Celular" />
+                        <RadzenDataGridColumn TItem="Suplidor" Property="Telefono" Title="Telefono" />
+                        <RadzenDataGridColumn TItem="Suplidor" Property="RNC" Title="RNC" />
+                        <RadzenDataGridColumn TItem="Suplidor" Property="Fecha_Registro" Title="Fecha Registro" />
+                    </Columns>
+
+                </RadzenDataGrid>
+            </div>
+
+
+
+        </ChildContent>
+    </RadzenFieldset>
+</RadzenCard>
+

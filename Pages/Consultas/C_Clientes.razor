@@ -18,22 +18,39 @@
     }
 </style>
 
-<div class="datagrid-container">
-    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
-        AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-        Data="clienteBLL.GetList(o => true)" TItem="Cliente" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
-        ShowPagingSummary="true">
 
-        <Columns>
-            <RadzenDataGridColumn TItem="Cliente" Property="ClienteId" Title="ClienteId#" />
-            <RadzenDataGridColumn TItem="Cliente" Property="Nombre" Title="Nombre" />
-            <RadzenDataGridColumn TItem="Cliente" Property="Direccion" Title="Direccion" />
-            <RadzenDataGridColumn TItem="Cliente" Property="Correo" Title="Correo" />
-            <RadzenDataGridColumn TItem="Cliente" Property="Celular" Title="Celular" />
-            <RadzenDataGridColumn TItem="Cliente" Property="Telefono" Title="Telefono" />
-            <RadzenDataGridColumn TItem="Cliente" Property="RNC" Title="RNC" />
-            <RadzenDataGridColumn TItem="Cliente" Property="Fecha_Registro" Title="Fecha Registro" />
-        </Columns>
+<RadzenCard>
+    <RadzenFieldset>
+        <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="emergency" class="me-1" /><b>Consulta Clientes.</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+            <div class="datagrid-container">
+                <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+                    AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                    Data="clienteBLL.GetList(o => true)" TItem="Cliente" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+                    ShowPagingSummary="true">
 
-    </RadzenDataGrid>
-</div>
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Cliente" Property="ClienteId" Title="ClienteId#" />
+                        <RadzenDataGridColumn TItem="Cliente" Property="Nombre" Title="Nombre" />
+                        <RadzenDataGridColumn TItem="Cliente" Property="Direccion" Title="Direccion" />
+                        <RadzenDataGridColumn TItem="Cliente" Property="Correo" Title="Correo" />
+                        <RadzenDataGridColumn TItem="Cliente" Property="Celular" Title="Celular" />
+                        <RadzenDataGridColumn TItem="Cliente" Property="Telefono" Title="Telefono" />
+                        <RadzenDataGridColumn TItem="Cliente" Property="RNC" Title="RNC" />
+                        <RadzenDataGridColumn TItem="Cliente" Property="Fecha_Registro" Title="Fecha Registro" />
+                    </Columns>
+
+                </RadzenDataGrid>
+            </div>
+
+
+        </ChildContent>
+    </RadzenFieldset>
+</RadzenCard>
+
+
+
