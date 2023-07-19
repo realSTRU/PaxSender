@@ -102,25 +102,31 @@ namespace PaxSender.BLL
 
         public bool VerificarArticulo(Articulo articulo)
         {
+            
+            if(DateTime.Compare(articulo.Fecha_Caducidad, DateTime.Now) < 0)
+            {
+                articulo.Estado = ESTADOS.PERECEDERO.ToString();
+                _contexto.Articulo.Update(articulo);
+                _contexto.Entry(articulo).State = EntityState.Detached;
+            }
+            else 
+            {
+                articulo.Estado = ESTADOS.ACTIVO.ToString();
+                _contexto.Articulo.Update(articulo);
+                _contexto.Entry(articulo).State = EntityState.Detached;
+            }
+
             if(articulo.Existencia <= articulo.Num_Reorden)
             {
                 articulo.Estado = ESTADOS.REORDEN.ToString();
                 _contexto.Articulo.Update(articulo);
+                _contexto.Entry(articulo).State = EntityState.Detached;
             }
-            else if(DateTime.Compare(articulo.Fecha_Caducidad, DateTime.Now) > 0)
-            {
-                articulo.Estado = ESTADOS.PERECEDERO.ToString();
-                _contexto.Articulo.Update(articulo);
-            }
-            else
-            {
-                articulo.Estado = ESTADOS.ACTIVO.ToString();
-                _contexto.Articulo.Update(articulo);
-            }
-            
-            _contexto.Entry(articulo).State = EntityState.Detached;
+
             int cantidad = _contexto.SaveChanges();
-            return _contexto.SaveChanges() > 0;
+            _contexto.Entry(articulo).State = EntityState.Detached;
+           
+            return cantidad > 0;
         }
     }
 }
