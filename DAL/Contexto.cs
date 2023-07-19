@@ -7,6 +7,8 @@ public class Contexto: DbContext
     public DbSet<Suplidor> Suplidor { get; set; }
     public DbSet<Categoria> Categoria { get; set; }
 
+    public DbSet<Sucursal> Sucursal {get; set;}
+
     public DbSet<Cliente> Cliente {get; set;}
 
     public DbSet<Pedido> Pedido {get; set;}
