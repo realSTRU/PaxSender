@@ -11,7 +11,12 @@ public class Pedido
 
     public DateTime Fecha { get; set; }
 
-    public double  Total { get; set; }
+    public int SucursalId {get; set;}
+    public string? Destino {get; set;}
+
+    public double?  Total { get; set; }
+
+    public double Total_Envio {get; set;}
 
     public string Estado { get; set; }
 
@@ -51,9 +56,7 @@ public class PedidoDetalle
 
 
 }
-
-/*
-public enum ESTADOS{
+public enum ESTADOPEDIDO{
 
     PENDIENTE,
 
@@ -61,11 +64,15 @@ public enum ESTADOS{
 
     ENCAMINO,
 
+    RECIBIDA,
+
+    LIQUIDADA
+
 
 
 
 
 
 }
-*/
+
 

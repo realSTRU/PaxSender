@@ -14,9 +14,11 @@ public class Articulo
 
     public string? Descripcion { get; set; }
 
-    public double Costo { get; set; }
+    public double? Costo { get; set; }
 
-    public double Precio { get; set; }
+    public double? Precio { get; set; }
+
+    public double Peso {get; set;}
 
     public int Existencia  {get; set;}
 
