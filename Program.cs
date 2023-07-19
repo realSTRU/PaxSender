@@ -23,7 +23,8 @@ builder.Services.AddTransient<CategoriaBLL>();// bll
 builder.Services.AddTransient<ClienteBLL>();//bll
 builder.Services.AddTransient<ArticuloBLL>();//bll
 builder.Services.AddScoped<NotificationService>();//ServicioDeNotificaciones
-builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<DialogService>();//DialogService
+builder.Services.AddScoped<SucursalBLL>();//bll
 
 
 

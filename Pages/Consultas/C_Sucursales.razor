@@ -1,0 +1,34 @@
+@page "/C_Sucursal"
+
+@inject SucursalBLL sucursalBLL
+<PageTitle>Consulta Sucursales.</PageTitle>
+
+
+
+<RadzenCard>
+    <RadzenFieldset>
+        <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="emergency" class="me-1" /><b>Consulta Sucursales.</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+            AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+            Data= "sucursalBLL.GetList(o => true)" TItem="Sucursal" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+                <Columns>
+                    
+                    <RadzenDataGridColumn TItem="Sucursal" Property="SucursalId" Title="SucursalId#"/>
+                    <RadzenDataGridColumn TItem="Sucursal" Property="Nombre" Title="Nombre"/>
+                      <RadzenDataGridColumn TItem="Sucursal" Property="Direccion" Title="Direccion"/>
+                    <RadzenDataGridColumn TItem="Sucursal" Property="Fecha_Registro" Title="Fecha"/>
+            
+                </Columns>
+
+            </RadzenDataGrid>
+        </ChildContent>
+    </RadzenFieldset>
+</RadzenCard>
+
+

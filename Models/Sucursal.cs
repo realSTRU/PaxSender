@@ -9,6 +9,7 @@ public class Sucursal{
     
     public string? Nombre { get; set; }
 
+    public string? Direccion {get; set;}
     public DateTime Fecha_Registro {get; set;}
     public bool Visible { get; set; }
 
