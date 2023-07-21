@@ -18,6 +18,7 @@ public class Articulo
 
     public double? Precio { get; set; }
 
+    [Required(ErrorMessage = "La Peso es obligatoria.")]
     public double Peso {get; set;}
 
     public int Existencia  {get; set;}
