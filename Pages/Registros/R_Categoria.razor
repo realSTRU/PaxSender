@@ -11,25 +11,16 @@
 <EditForm Model="categoria" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
 
-    <div class="card shadow-lg">
+     <RadzenCard class="rz-shadow-7 rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12">
+        <RadzenFieldset>
+            <HeaderTemplate>
+                <span class="d-inline-flex align-items-center align-middle">
+                    <RadzenIcon Icon="category" class="me-1" /><b>Registro de categorias</b>
+                </span>
+            </HeaderTemplate>
+            <ChildContent>
 
-        <div class="card ">
-
-            <div class="card-header ">
-
-                <h3 class="card-title">
-                    Registro Categoria
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-truck" viewBox="0 0 16 16">
-                     </svg>
-                </h3>
-            </div>
-
-            <div class="card-body">
-                <hr>
-
-        @*CategoriaId*@
-
+            <RadzenStack>
                 <div class="sml col-3">
                         <label>CategoriaId</label>
                         <div class="input-group">
@@ -54,31 +45,24 @@
                         <ValidationMessage For="@(() => categoria.CategoriaId)" />
                     </div>
                     </div>
-                    </div>
-                    </div>
+
+            </RadzenStack>
+            
+
+            
+
+            <RadzenStack>
+                <center>
+                    <RadzenButton Click="Nuevo"Text="Nuevo" Icon="refresh" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton Click="Guardar"Text="Guardar" Icon="save" ButtonStyle="ButtonStyle.Success" />
+                    <RadzenButton Click="Eliminar"Text="Eliminar" Icon="delete" ButtonStyle="ButtonStyle.Danger" />
+                </center>
+            </RadzenStack>
 
 
-    @*...................... Botones ......................*@
-
-        <div class="card-footer">
-            <div class="form-group text-left" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo" title="Nuevo cliente">
-                    Nuevo
-                </button>
-
-                <button type="submit" class="btn btn-lg btn-success" title="Guardar cliente">
-                    Guardar
-                </button>
-
-                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar" title="Eliminar cliente">
-                    Eliminar
-                </button>
-            </div>
-        </div>
-
-
-  </div>
-
+            </ChildContent>
+        </RadzenFieldset>
+    </RadzenCard>   
 </EditForm>
 
 @code {

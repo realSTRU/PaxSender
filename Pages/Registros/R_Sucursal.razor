@@ -6,29 +6,21 @@
 @* Registro de categoria de productos *@
 @inject AuthenticationStateProvider Authentication
 
+
 <EditForm Model="sucursal" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
 
-    <div class="card shadow-lg">
+     <RadzenCard class="rz-shadow-7 rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12">
+        <RadzenFieldset>
+            <HeaderTemplate>
+                <span class="d-inline-flex align-items-center align-middle">
+                    <RadzenIcon Icon="category" class="me-1" /><b>Registro de Sucursales</b>
+                </span>
+            </HeaderTemplate>
+            <ChildContent>
 
-        <div class="card ">
-
-            <div class="card-header ">
-
-                <h3 class="card-title">
-                    Registro Categoria
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-truck" viewBox="0 0 16 16">
-                     </svg>
-                </h3>
-            </div>
-
-            <div class="card-body">
-                <hr>
-
-        @*SucursalId*@
-
-                <div class="sml col-3">
+            <RadzenStack>
+                                <div class="sml col-3">
                         <label>SucursalId</label>
                         <div class="input-group">
                             <InputNumber @bind-Value="sucursal.SucursalId" class="form-control " />
@@ -55,34 +47,26 @@
                         <InputText @bind-Value="sucursal.Direccion" placeholder="Direccion Sucursal" class="form-control" />
                     </div>
                     </div>
-                    </div>
-                    </div>
+            </RadzenStack>
+            
+
+            <br>
+
+            <RadzenStack>
+                <center>
+                    <RadzenButton Click="Nuevo"Text="Nuevo" Icon="refresh" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton Click="Guardar"Text="Guardar" Icon="save" ButtonStyle="ButtonStyle.Success" />
+                    <RadzenButton Click="Eliminar"Text="Eliminar" Icon="delete" ButtonStyle="ButtonStyle.Danger" />
+                </center>
+            </RadzenStack>
 
 
-    @*...................... Botones ......................*@
-
-            <div class="card-footer">
-                <div class="form-group text-left" display: inline-block>
-                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo" title="Limpiar registro">
-                        <span class="oi oi-file"> Nuevo</span>
-                    </button>
-
-                    <button type="submit" class="btn btn-lg btn-success" title="Guardar Sucursal">
-                        <span class="oi oi-document"> Guardar</span>
-                    </button>
-
-                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar" title="Eliminar Sucursal">
-                        <span class="oi oi-trash"> Eliminar</span>
-                    </button>
-
-                </div>
-
-            </div>
-
-
-  </div>
-
+            </ChildContent>
+        </RadzenFieldset>
+    </RadzenCard>   
 </EditForm>
+
+
 
 @code {
 
