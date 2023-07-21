@@ -1,4 +1,4 @@
-@page "/R_Categorias"
+ @page "/R_Categorias"
 
 @page "/R_Categorias/{CategoriaId:int}"
 @inject CategoriaBLL categoriaBLL
@@ -25,17 +25,18 @@
 
             <div class="card-body">
                 <hr>
-                
- @*CategoriaId*@
-                
+
+        @*CategoriaId*@
+
                 <div class="sml col-3">
                         <label>CategoriaId</label>
                         <div class="input-group">
-                            <InputNumber @bind-Value="categoria.CategoriaId" class="form-control " />
+                            <input type="number" @bind="categoria.CategoriaId" class="form-control " />
                             <div class="input-group-append">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-lg btn-primary"
-                    @onclick="Buscar">Buscar</button>
+                                    <button @onclick="Buscar" class="btn btn-outline-primary" type="button" id="buscarButton">
+                            <i class="oi oi-magnifying-glass" />
+                        </button>
 
                                 </div>
                             </div>
@@ -47,37 +48,35 @@
 
                     <div class="sml col-3">
                         <label>Nombre Categoria</label>
-                        <InputText @bind-Value="categoria.Descripcion" placeholder="Descripcion Categoria" class="form-control" />
+                        <input type="text" required @bind="categoria.Descripcion" placeholder="Descripcion Categoria" class="form-control" />
                         <ValidationMessage For="@(() => categoria.CategoriaId)" />
                     </div>
                     </div>
                     </div>
                     </div>
 
-          
-  @*...................... Botones ......................*@
 
-            <div class="card-footer">
-                <div class="form-group text-left" display: inline-block>
-                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo" title="Nuevo categoria">
-                        <span class="oi oi-file"> Nuevo</span>
-                    </button>
+    @*...................... Botones ......................*@
 
-                    <button type="submit" class="btn btn-lg btn-success" title="Guardar categoria">
-                        <span class="oi oi-document"> Guardar</span>
-                    </button>
+        <div class="card-footer">
+            <div class="form-group text-left" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo" title="Nuevo cliente">
+                    Nuevo
+                </button>
 
-                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar" title="Eliminar categoria">
-                        <span class="oi oi-trash"> Eliminar</span>
-                    </button>
+                <button type="submit" class="btn btn-lg btn-success" title="Guardar cliente">
+                    Guardar
+                </button>
 
-                </div>
-
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar" title="Eliminar cliente">
+                    Eliminar
+                </button>
             </div>
+        </div>
 
-                
+
   </div>
- 
+
 </EditForm>
 
 @code {
@@ -119,26 +118,35 @@
   }
   void Guardar()
   {
-    if (categoriaBLL.Guardar(categoria))
+    try
     {
-      Nuevo();
-      // notificacion.ShowNotification("Guardado correctamente.");
+      if (categoriaBLL.Guardar(categoria))
+      {
+        Nuevo();
+        // notificacion.ShowNotification("Guardado correctamente.");
+      }
+      else
+      {
+        // notificacion.ShowNotification("No fue guardado.", NotificationSeverity.Error);
+      }
     }
-    else
-    {
-      // notificacion.ShowNotification("No fue guardado.", NotificationSeverity.Error);
-    }
+    catch (Exception exception) { }
   }
   void Eliminar()
   {
-    if (categoriaBLL.Eliminar(categoria))
+    try
     {
-      Nuevo();
-      //notification.ShowNotification("Eliminado correctamente.");
+      if (categoriaBLL.Eliminar(categoria))
+      {
+        Nuevo();
+        //notification.ShowNotification("Eliminado correctamente.");
+      }
+      else if (categoria.CategoriaId == 0)
+      {
+        // notification.ShowNotification("No fue eliminado.", NotificationSeverity.Error);
+      }
     }
-    else if (categoria.CategoriaId == 0)
-    {
-      // notification.ShowNotification("No fue eliminado.", NotificationSeverity.Error);
-    }
+    catch (Exception exception) { }
+
   }
 }

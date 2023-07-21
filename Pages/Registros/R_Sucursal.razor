@@ -1,4 +1,4 @@
-@page "/R_Sucursal"
+ @page "/R_Sucursal"
 @page "/R_Sucursal/{SucursalId:int}"
 @inject SucursalBLL sucursalBLL
 @inject NotificationService Notify
@@ -25,9 +25,9 @@
 
             <div class="card-body">
                 <hr>
-                
- @*SucursalId*@
-                
+
+        @*SucursalId*@
+
                 <div class="sml col-3">
                         <label>SucursalId</label>
                         <div class="input-group">
@@ -35,7 +35,7 @@
                             <div class="input-group-append">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-lg btn-primary"
-                    @onclick="Buscar">Buscar</button>
+                @onclick="Buscar">Buscar</button>
 
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
 
                     <div class="sml col-3">
                         <label>Nombre Sucursal.</label>
-                        <InputText @bind-Value="sucursal.Nombre" placeholder="Nombre Sucursal" class="form-control" />
+                        <input type="text" required @bind="sucursal.Nombre" placeholder="Nombre Sucursal" class="form-control" />
                     </div>
 
                      <div class="sml col-3">
@@ -58,8 +58,8 @@
                     </div>
                     </div>
 
-          
-  @*...................... Botones ......................*@
+
+    @*...................... Botones ......................*@
 
             <div class="card-footer">
                 <div class="form-group text-left" display: inline-block>
@@ -79,9 +79,9 @@
 
             </div>
 
-                
+
   </div>
- 
+
 </EditForm>
 
 @code {
@@ -89,7 +89,7 @@
   [Parameter]
   public int SucursalId { get; set; }
 
-  private Sucursal sucursal {get; set;} = new Sucursal();
+  private Sucursal sucursal { get; set; } = new Sucursal();
   public List<Categoria> lista { get; set; } = new List<Categoria>();
 
   protected override void OnInitialized()
@@ -106,43 +106,53 @@
     var encontrado = sucursalBLL.Buscar(sucursal.SucursalId);
     if (encontrado != null)
     {
-      sucursal= encontrado;
+      sucursal = encontrado;
       this.sucursal = encontrado;
-      Notify.ShowNotification("Busqueda","Registro encontrado", NotificationSeverity.Success);
+      Notify.ShowNotification("Busqueda", "Registro encontrado", NotificationSeverity.Success);
     }
     else
     {
-      Notify.ShowNotification("Busqueda","Registro no encontrado", NotificationSeverity.Warning);
+      Notify.ShowNotification("Busqueda", "Registro no encontrado", NotificationSeverity.Warning);
     }
   }
   void Nuevo()
   {
     this.sucursal = new Sucursal();
-    Notify.ShowNotification("Limpieza","Registro Limpiado luego de la acción con exito!", NotificationSeverity.Success);
+    Notify.ShowNotification("Limpieza", "Registro Limpiado luego de la acción con exito!", NotificationSeverity.Success);
 
   }
   void Guardar()
   {
-    if (sucursalBLL.Guardar(sucursal))
+    try
     {
-      Nuevo();
-      Notify.ShowNotification("Guardado","Guardado con exito!",NotificationSeverity.Success);
+      if (sucursalBLL.Guardar(sucursal))
+      {
+        Nuevo();
+        Notify.ShowNotification("Guardado", "Guardado con exito!", NotificationSeverity.Success);
+      }
+      else
+      {
+        Notify.ShowNotification("Guardado", "No se ha guardado nada revise los campos", NotificationSeverity.Error);
+      }
     }
-    else
-    {
-      Notify.ShowNotification("Guardado","No se ha guardado nada revise los campos",NotificationSeverity.Error);
-    }
+    catch (Exception exception) { }
+
   }
   void Eliminar()
   {
-    if (sucursalBLL.Eliminar(sucursal))
+    try
     {
-      Nuevo();
-      Notify.ShowNotification("Eliminado","Eliminado con exito!",NotificationSeverity.Success);
+      if (sucursalBLL.Eliminar(sucursal))
+      {
+        Nuevo();
+        Notify.ShowNotification("Eliminado", "Eliminado con exito!", NotificationSeverity.Success);
+      }
+      else if (sucursal.SucursalId == 0)
+      {
+        Notify.ShowNotification("Eliminado", "Error al eliminar revise que haya algo a eliminar", NotificationSeverity.Error);
+      }
     }
-    else if (sucursal.SucursalId == 0)
-    {
-      Notify.ShowNotification("Eliminado","Error al eliminar revise que haya algo a eliminar",NotificationSeverity.Error);
-    }
+    catch (Exception exception) { }
+
   }
 }
