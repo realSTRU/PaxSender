@@ -1,4 +1,4 @@
-@page "/R_Suplidores"
+ @page "/R_Suplidores"
 
 @page "/R_Suplidores/{SuplidorId:int}"
 @inject SuplidorBLL suplidorBLL
@@ -11,7 +11,6 @@
 
     <div class="card shadow-lg">
 
-        <div class="card ">
 
             <div class="card-header ">
 
@@ -27,33 +26,34 @@
 
             <div class="card-body">
                 <hr>
-                
- @*SuplidorId*@
-                
+
+            @*SuplidorId*@
+
                 <div class="sml col-3">
                         <label>SuplidorID</label>
                         <div class="input-group">
                             <InputNumber @bind-Value="suplidor.SuplidorId" class="form-control " />
                             <div class="input-group-append">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-lg btn-primary"
-                    @onclick="Buscar">Buscar</button>
+                                     <button @onclick="Buscar" class="btn btn-outline-primary" type="button" id="buscarButton">
+                            <i class="oi oi-magnifying-glass" />
+                        </button>
 
                                 </div>
                             </div>
                             </div>
                             </div>
-        @*...................... Nombre ......................*@
+            @*...................... Nombre ......................*@
 
                 <div class="row">
 
                     <div class="sml col-3">
                         <label>Nombre Suplidor</label>
-                        <InputText @bind-Value="suplidor.Nombre" placeholder="Nombre Suplidor" class="form-control" />
+                        <input type="text" required @bind="suplidor.Nombre" placeholder="Nombre Suplidor" class="form-control" />
                         <ValidationMessage For="@(() => suplidor.Nombre)" />
                     </div>
 
-          @*...................... Dirección ......................*@
+                @*...................... Dirección ......................*@
 
 
                     <div class="sml col-3">
@@ -65,11 +65,11 @@
                         <ValidationMessage For="@(() => suplidor.Direccion)" />
                         <br>
                     </div>
-                    </div>
-               
 
-        @*...................... Telefono ......................*@
-          <div class="row">
+
+
+                @*...................... Telefono ......................*@
+
                     <div class="sml col-3">
                         <label>
                             Teléfono
@@ -84,7 +84,9 @@
                         <ValidationMessage For="@(() => suplidor.Telefono)" />
                         <br>
                         </div>
-          @*...................... Celular ......................*@
+                        </div>
+            @*...................... Celular ......................*@
+                <div class="row">
                     <div class="sml col-3">
                         <label>
                             Celular
@@ -99,9 +101,9 @@
                         <ValidationMessage For="@(() => suplidor.Celular)" />
                         <br>
                     </div>
-                    </div>
-      @*...................... Email ......................*@
-                <div class="row">
+
+                @*............... Email ......................*@
+
 
                     <div class="sml col-3">
                         <label>
@@ -119,7 +121,7 @@
                         <ValidationMessage For="@(() => suplidor.Correo)" />
                     </div>
 
-      @*...................... RNC ......................*@
+                @*...................... RNC ......................*@
                      <div class="sml col-3">
                         <label>
                             RNC
@@ -134,8 +136,10 @@
                         <ValidationMessage For="@(() => suplidor.RNC)" />
                         <br>
                         </div>
-                      </div>
-      @*...................... Fecha ......................*@
+                    </div>
+
+
+            @*...................... Fecha ......................*@
 
 
                     <div class="form-group col-md-2">
@@ -145,90 +149,98 @@
                     </div>
 
                     </div>
-  @*...................... Botones ......................*@
+    @*...................... Botones ......................*@
 
-            <div class="card-footer">
-                <div class="form-group text-left" display: inline-block>
-                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo" title="Nuevo suplidor">
-                        <span class="oi oi-file"> Nuevo</span>
-                    </button>
 
-                    <button type="submit" class="btn btn-lg btn-success" title="Guardar suplidor">
-                        <span class="oi oi-document"> Guardar</span>
-                    </button>
+        <div class="card-footer">
+            <div class="form-group text-left" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo" title="Nuevo cliente">
+                    Nuevo
+                </button>
 
-                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar" title="Eliminar suplidor">
-                        <span class="oi oi-trash"> Eliminar</span>
-                    </button>
+                <button type="submit" class="btn btn-lg btn-success" title="Guardar cliente">
+                    Guardar
+                </button>
 
-                </div>
-
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar" title="Eliminar cliente">
+                    Eliminar
+                </button>
             </div>
+        </div>
 
-                
-  </div>
- 
+
+
 </EditForm>
 
 @code {
 
-  [Parameter]
-  public int SuplidorId { get; set; }
+    [Parameter]
+    public int SuplidorId { get; set; }
 
-  private Suplidor suplidor = new Suplidor();
-  public List<Suplidor> lista { get; set; } = new List<Suplidor>();
+    private Suplidor suplidor = new Suplidor();
+    public List<Suplidor> lista { get; set; } = new List<Suplidor>();
 
-  protected override void OnInitialized()
-  {
-    suplidor.SuplidorId = 0;
-    if (SuplidorId > 0)
+    protected override void OnInitialized()
     {
-      suplidor.SuplidorId = SuplidorId;
-      Buscar();
+        suplidor.SuplidorId = 0;
+        if (SuplidorId > 0)
+        {
+            suplidor.SuplidorId = SuplidorId;
+            Buscar();
+        }
     }
-  }
-  void Buscar()
-  {
-    var encontrado = suplidorBLL.Buscar(suplidor.SuplidorId);
-    if (encontrado != null)
+    void Buscar()
     {
-      suplidor = encontrado;
-      this.suplidor = encontrado;
-      // notification.ShowNotification("Registro encontrado", NotificationSeverity.Success);
+        var encontrado = suplidorBLL.Buscar(suplidor.SuplidorId);
+        if (encontrado != null)
+        {
+            suplidor = encontrado;
+            this.suplidor = encontrado;
+            // notification.ShowNotification("Registro encontrado", NotificationSeverity.Success);
+        }
+        else
+        {
+            //otification.ShowNotification("Registro no encontrado", NotificationSeverity.Warning);
+        }
     }
-    else
+    void Nuevo()
     {
-      //otification.ShowNotification("Registro no encontrado", NotificationSeverity.Warning);
-    }
-  }
-  void Nuevo()
-  {
-    this.suplidor = new Suplidor();
-    //notificacion.ShowNotification("Nueva plantilla.", NotificationSeverity.Success);
+        this.suplidor = new Suplidor();
+        //notificacion.ShowNotification("Nueva plantilla.", NotificationSeverity.Success);
 
-  }
-  void Guardar()
-  {
-    if (suplidorBLL.Guardar(suplidor))
-    {
-      Nuevo();
-      // notificacion.ShowNotification("Guardado correctamente.");
     }
-    else
+    void Guardar()
     {
-      // notificacion.ShowNotification("No fue guardado.", NotificationSeverity.Error);
+        try
+        {
+            if (suplidorBLL.Guardar(suplidor))
+            {
+                Nuevo();
+                // notificacion.ShowNotification("Guardado correctamente.");
+            }
+            else
+            {
+                // notificacion.ShowNotification("No fue guardado.", NotificationSeverity.Error);
+            }
+        }
+        catch (Exception excepcion) { }
+
     }
-  }
-  void Eliminar()
-  {
-    if (suplidorBLL.Eliminar(suplidor))
+    void Eliminar()
     {
-      Nuevo();
-      //notification.ShowNotification("Eliminado correctamente.");
+        try
+        {
+            if (suplidorBLL.Eliminar(suplidor))
+            {
+                Nuevo();
+                //notification.ShowNotification("Eliminado correctamente.");
+            }
+            else if (suplidor.SuplidorId == 0)
+            {
+                // notification.ShowNotification("No fue eliminado.", NotificationSeverity.Error);
+            }
+        }
+        catch (Exception excepcion) { }
+
     }
-    else if (suplidor.SuplidorId == 0)
-    {
-      // notification.ShowNotification("No fue eliminado.", NotificationSeverity.Error);
-    }
-  }
 }
