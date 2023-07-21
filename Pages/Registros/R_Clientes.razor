@@ -132,6 +132,10 @@
         if (clienteEncontrado != null)
         {
             cliente = clienteEncontrado;
+            Notify.ShowNotification(
+            titulo: "Busqueda",
+            mensaje: "Registro encontrado con exito!",
+            NotificationSeverity.Error);
         }
         else
         {
@@ -145,6 +149,7 @@
     public void Nuevo()
     {
         this.cliente = new Cliente();
+        Notify.ShowNotification("Limpieza", "Registro Limpiado luego de la acción con exito!", NotificationSeverity.Info);
     }
 
     //Se inicio a agregar un metodo de control para evitar que se producta una excepcion en el metodo guardar
@@ -199,14 +204,15 @@
                         NotificationSeverity.Success);
                     Nuevo();
                 }
-                else
-                {
+                
+            }
+            else
+            {
                     Notify.ShowNotification(
                         titulo: "Error",
                         mensaje: "Ocurrio un error y no fue posible eliminar",
                         NotificationSeverity.Error);
-                }
-            }
+            } 
             
         }catch(Exception exception){}
     }

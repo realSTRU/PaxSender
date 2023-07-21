@@ -2,6 +2,7 @@
 
 @page "/R_Suplidores/{SuplidorId:int}"
 @inject SuplidorBLL suplidorBLL
+@inject NotificationService Notify
 
 @* Registro de los suplidores *@
 @inject AuthenticationStateProvider Authentication
@@ -196,31 +197,49 @@
         {
             suplidor = encontrado;
             this.suplidor = encontrado;
-            // notification.ShowNotification("Registro encontrado", NotificationSeverity.Success);
+            Notify.ShowNotification(
+            titulo: "Busqueda",
+            mensaje: "Encontrado con exito!",
+            NotificationSeverity.Success);
         }
         else
         {
-            //otification.ShowNotification("Registro no encontrado", NotificationSeverity.Warning);
+            Notify.ShowNotification(
+            titulo: "Error de Busqueda",
+            mensaje: "Registro no encontrado",
+            NotificationSeverity.Error);
         }
     }
     void Nuevo()
     {
         this.suplidor = new Suplidor();
-        //notificacion.ShowNotification("Nueva plantilla.", NotificationSeverity.Success);
+        Notify.ShowNotification(
+            titulo: "Limpieza",
+            mensaje: "Registro limpiado luego de realizar la acción",
+            NotificationSeverity.Info);
 
     }
     void Guardar()
     {
         try
         {
-            if (suplidorBLL.Guardar(suplidor))
+            if(Validar())
             {
-                Nuevo();
-                // notificacion.ShowNotification("Guardado correctamente.");
+                if (suplidorBLL.Guardar(suplidor))
+                {
+                    Nuevo();
+                    Notify.ShowNotification(
+                    titulo: "Guardado",
+                    mensaje: "Registro guardado con exito!",
+                    NotificationSeverity.Success);
+                }
             }
             else
             {
-                // notificacion.ShowNotification("No fue guardado.", NotificationSeverity.Error);
+                Notify.ShowNotification(
+                titulo: "Error al guardar",
+                mensaje: "Revise los campos",
+                NotificationSeverity.Error);
             }
         }
         catch (Exception excepcion) { }
@@ -230,17 +249,32 @@
     {
         try
         {
-            if (suplidorBLL.Eliminar(suplidor))
+            if(Validar())
             {
-                Nuevo();
-                //notification.ShowNotification("Eliminado correctamente.");
+                if (suplidorBLL.Eliminar(suplidor))
+                {
+                    Nuevo();
+                Notify.ShowNotification(
+                    titulo: "Eliminado",
+                    mensaje: "Registro eliminado con exito!",
+                    NotificationSeverity.Success);
+                }
             }
-            else if (suplidor.SuplidorId == 0)
+            else
             {
-                // notification.ShowNotification("No fue eliminado.", NotificationSeverity.Error);
+                Notify.ShowNotification(
+                titulo: "Eliminado",
+                mensaje: "Registro eliminado con exito!",
+                NotificationSeverity.Error);
             }
         }
         catch (Exception excepcion) { }
 
+    }
+
+    public bool Validar()
+    {
+        return suplidor.Nombre != null && suplidor.Direccion != null && suplidor.Telefono != null
+        && suplidor.RNC != null && suplidor.Celular != null && suplidor.Correo != null;
     }
 }

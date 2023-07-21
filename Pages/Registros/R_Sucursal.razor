@@ -118,17 +118,21 @@
   void Nuevo()
   {
     this.sucursal = new Sucursal();
-    Notify.ShowNotification("Limpieza", "Registro Limpiado luego de la acción con exito!", NotificationSeverity.Success);
+    Notify.ShowNotification("Limpieza", "Registro Limpiado luego de la acción con exito!", NotificationSeverity.Info);
 
   }
   void Guardar()
   {
     try
     {
-      if (sucursalBLL.Guardar(sucursal))
+
+      if(Validar())
       {
-        Nuevo();
-        Notify.ShowNotification("Guardado", "Guardado con exito!", NotificationSeverity.Success);
+          if (sucursalBLL.Guardar(sucursal))
+        {
+          Nuevo();
+          Notify.ShowNotification("Guardado", "Guardado con exito!", NotificationSeverity.Success);
+        }
       }
       else
       {
@@ -142,17 +146,25 @@
   {
     try
     {
-      if (sucursalBLL.Eliminar(sucursal))
+      if(Validar())
       {
-        Nuevo();
-        Notify.ShowNotification("Eliminado", "Eliminado con exito!", NotificationSeverity.Success);
+          if (sucursalBLL.Eliminar(sucursal))
+        {
+          Nuevo();
+          Notify.ShowNotification("Eliminado", "Eliminado con exito!", NotificationSeverity.Success);
+        }
       }
-      else if (sucursal.SucursalId == 0)
+      else
       {
         Notify.ShowNotification("Eliminado", "Error al eliminar revise que haya algo a eliminar", NotificationSeverity.Error);
       }
     }
     catch (Exception exception) { }
 
+  }
+
+  public bool Validar()
+  {
+      return sucursal.Nombre != null && sucursal.Direccion != null;
   }
 }

@@ -123,6 +123,10 @@
         if (articuloEncontrado != null)
         {
             articulo = articuloEncontrado;
+            Notify.ShowNotification(
+            titulo: "Busqueda",
+            mensaje: "Registro encontrado con exito!",
+            NotificationSeverity.Error);
         }
         else
         {
@@ -136,6 +140,7 @@
     public void Nuevo()
     {
         this.articulo = new Articulo();
+        Notify.ShowNotification("Limpieza", "Registro Limpiado luego de la acción con exito!", NotificationSeverity.Info);
     }
 
     public void Guardar()
@@ -189,14 +194,15 @@
                         NotificationSeverity.Success);
                     Nuevo();
                 }
-                else
-                {
+        
+
+            }
+            else
+            {
                     Notify.ShowNotification(
                         titulo: "Error",
                         mensaje: "Ocurrio un error y no fue posible eliminar",
                         NotificationSeverity.Error);
-                }
-
             }
             
         }catch (Exception excepcion) { }
