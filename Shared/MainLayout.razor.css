@@ -4,6 +4,12 @@
     flex-direction: column;
 }
 
+body, html, #root, #app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 main {
     flex: 1;
 }
@@ -50,13 +56,6 @@ main {
         flex-direction: row;
     }
 
-    .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: sticky;
-        top: 0;
-    }
-
     .top-row {
         position: sticky;
         top: 0;
@@ -67,4 +66,26 @@ main {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
+
+    /* Estilos del sidebar */
+    .sidebar {
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    /* Estilos del contenido principal */
+    .main-content {
+        margin-left: 250px; /* Ancho del sidebar */
+        padding-top: 3.5rem; /* Altura de la top-row */
+    }
+
+    /* Estilos del contenido en RadzenBody */
+    .rz-p-4 {
+        padding: 2rem; /* Espacio de contenido (puedes ajustar esto según tus necesidades) */
+    }
+
 }

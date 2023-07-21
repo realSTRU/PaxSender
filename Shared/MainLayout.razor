@@ -5,14 +5,12 @@
 
 <PageTitle>PaxSender</PageTitle>
 
-<head>
-    <link rel="shortcut icon" href="https://blogger.googleusercontent.com/img/a/AVvXsEgyC5BC69l2F5UDicjJ_VrOsI7y6N-lO33wuvTCnSBRwfbVqGUFMudClSrFuDDl0p6bzVqtmNUVJ5kOqgDBRUB_1jVMn1cojzv8DMNQ0fEo402OTig6mhWTRDdw9qMtXHCZX6PKrjs1RZumAJ2vi_ALWeX4WPcmBw7dXl21zhOs1TUqiSZ6t3n4luOG">
-</head>
 
 
 <RadzenNotification></RadzenNotification>
  <RadzenDialog />
-<RadzenLayout style="height: 100vh">
+
+<RadzenLayout style="height: 100vh; background-image: url(''); background-size: cover; background-attachment: fixed; background-repeat: no-repeat; ">
     
     <RadzenHeader class="rz-background-color-warning-light" style="display: flex; justify-content: space-between; border:none;">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" class="rz-background-color-warning-light" Gap="0">
@@ -39,28 +37,28 @@
         <RadzenPanelMenu style="background-color:#28363c;" Multiple="false" >
 
 
-                    <RadzenPanelMenuItem Selected="true"  icon="emergency" style="background-color:#28363c;" Text="Clientes" >
+                    <RadzenPanelMenuItem Selected="true"  icon="person_pin" style="background-color:#28363c;" Text="Clientes" >
                         <RadzenPanelMenuItem Selected="true"  icon="search" Text="Consulta" Path="C_Clientes" />
                         <RadzenPanelMenuItem  Selected="true" icon="add" Text="Registro" Path="R_Clientes" />
                     </RadzenPanelMenuItem>
 
-                    <RadzenPanelMenuItem Selected="true" icon="shield"  style="background-color:#28363c;" Text="Suplidores" >
+                    <RadzenPanelMenuItem Selected="true" icon="local_shipping"  style="background-color:#28363c;" Text="Suplidores" >
                         <RadzenPanelMenuItem Selected="true"  icon="search"  Text="Consulta" Path="C_Suplidores" />
                         <RadzenPanelMenuItem Selected="true"  icon="add" Text="Registro" Path="R_Suplidores" />
                     </RadzenPanelMenuItem>
 
-                    <RadzenPanelMenuItem Selected="true"  icon="inbox" style="background-color:#28363c;" Text="Articulos" >
+                    <RadzenPanelMenuItem Selected="true"  icon="inventory" style="background-color:#28363c;" Text="Articulos" >
                         <RadzenPanelMenuItem Selected="true"   icon="search" Text="Consulta" Path="C_Articulos" />
                         <RadzenPanelMenuItem Selected="true"   icon="add" Text="Registro" Path="R_Articulos" />
 
                     </RadzenPanelMenuItem>
 
-                     <RadzenPanelMenuItem Selected="true"  icon="emergency" style="background-color:#28363c;" Text="Categorias" >
+                     <RadzenPanelMenuItem Selected="true"  icon="category" style="background-color:#28363c;" Text="Categorias" >
                         <RadzenPanelMenuItem Selected="true"  icon="search" Text="Consulta" Path="C_Categorias" />
                         <RadzenPanelMenuItem  Selected="true" icon="add" Text="Registro" Path="R_Categorias" />
                     </RadzenPanelMenuItem>
 
-                    <RadzenPanelMenuItem Selected="true"  icon="emergency" style="background-color:#28363c;" Text="Sucursales" >
+                    <RadzenPanelMenuItem Selected="true"  icon="museum" style="background-color:#28363c;" Text="Sucursales" >
                         <RadzenPanelMenuItem Selected="true"  icon="search" Text="Consulta" Path="C_Sucursal" />
                         <RadzenPanelMenuItem  Selected="true" icon="add" Text="Registro" Path="R_Sucursal" />
                     </RadzenPanelMenuItem>
@@ -73,7 +71,7 @@
         <div class="rz-p-4">
         </div>
     </RadzenSidebar>
-    <RadzenBody style="background-color: white;">
+    <RadzenBody>
         <div class="rz-p-4">
             @Body
         </div>
