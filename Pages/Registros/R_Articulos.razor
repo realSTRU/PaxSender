@@ -1,0 +1,212 @@
+ @page "/R_Articulos"
+@page "/R_Articulos/{ArticuloId:int}"
+
+@inject ArticuloBLL articuloBLL
+@inject CategoriaBLL categoriaBLL
+@inject NotificationService Notify
+
+ <EditForm Model="articulo" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+     <RadzenCard class="rz-shadow-7 rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12">
+        <RadzenFieldset>
+            <HeaderTemplate>
+                <span class="d-inline-flex align-items-center align-middle">
+                    <RadzenIcon Icon="category" class="me-1" /><b>Registro de articulos</b>
+                </span>
+            </HeaderTemplate>
+            <ChildContent>
+
+            <RadzenStack>
+                <div class="sml col-3">
+                    <label>ArticuloId</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="articulo.ArticuloId" class="form-control " />
+                        <div class="input-group-append">
+                            <div class="input-group-append">
+                                <button @onclick="Buscar" class="btn btn-outline-primary" type="button" id="buscarButton">
+                                <i class="oi oi-magnifying-glass" />
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Descripción</label>
+                            <input type="text" @bind="articulo.Descripcion" required placeholder="Descripción" class="form-control" />
+                        </div>
+                        <div class="col-4">
+                            <label>Categoría</label>
+                            <select @bind="articulo.CategoriaId"  placeholder="Selecciona una categoria" class="form-select">
+                                @foreach (var item in L_Categorias)
+                                {
+                                                <option value="@item.CategoriaId">@item.Descripcion</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label>Fecha Caducidad</label>
+                            <RadzenDatePicker @bind-Value="@articulo.Fecha_Caducidad" ShowTime="true" HourFormat="12"
+                                DateFormat="MM/dd/yyyy h:mm tt" class="form-control" Name="Fecha" />
+                            @*<RadzenRequiredValidator Component="Fecha" Text="Nombre es Campo Requerido" Popup=true
+                                Style="position: absolute" />*@
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Peso</label>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value="articulo.Peso" Placeholder ="UND/LB"class="form-control" />
+                        </div>
+                        <div class="col-4">
+                            <label>Costo</label>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value="articulo.Costo" Placeholder="Costo del articulo" class="form-control" />
+                        </div>
+                        <div class="col-4">
+                            <label>Precio</label>
+                            <RadzenNumeric ShowUpDown="false" @bind-Value="articulo.Precio" Placeholder="Precio del articulo" class="form-control" />
+                        </div>
+                        <div class="col-4">
+                            <label>&nbsp;</label> <!-- Espacio en blanco para alinear con las etiquetas anteriores -->
+                            <!-- Agregar más campos si es necesario -->
+                        </div>
+                    </div>
+
+                
+            </RadzenStack>
+            
+
+            
+
+            <RadzenStack>
+                <center>
+                    <RadzenButton Click="Nuevo"Text="Nuevo" Icon="refresh" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton Click="Guardar"Text="Guardar" Icon="save" ButtonStyle="ButtonStyle.Success" />
+                    <RadzenButton Click="Eliminar"Text="Eliminar" Icon="delete" ButtonStyle="ButtonStyle.Danger" />
+                </center>
+            </RadzenStack>
+
+
+            </ChildContent>
+        </RadzenFieldset>
+    </RadzenCard>   
+
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public int? ArticuloId { get; set; }
+    public Articulo articulo { get; set; } = new Articulo();
+
+    public List<Categoria> L_Categorias = new List<Categoria>();
+
+    protected override void OnInitialized()
+    {
+        if (ArticuloId.HasValue)
+        {
+            // si recibimos un {SistemaId:int} por parametro asignarlo
+            // y luego buscarla para que se vea en pantalla
+            articulo.ArticuloId = ArticuloId.Value;
+            Buscar();
+        }
+
+        L_Categorias = categoriaBLL.GetList(c => true);
+
+    }
+    public void Buscar()
+    {
+        var articuloEncontrado = articuloBLL.Buscar(articulo.ArticuloId);
+        if (articuloEncontrado != null)
+        {
+            articulo = articuloEncontrado;
+        }
+        else
+        {
+            Notify.ShowNotification(
+            titulo: "Error de Busqueda",
+            mensaje: "Registro no encontrado",
+            NotificationSeverity.Error);
+        }
+    }
+
+    public void Nuevo()
+    {
+        this.articulo = new Articulo();
+    }
+
+    public void Guardar()
+    {
+        try
+        {
+            if (!Validar())
+            {
+                Notify.ShowNotification(
+                    titulo: "Validación",
+                    mensaje: "Error Revise los campos",
+                    NotificationSeverity.Error);
+                return;
+            }
+
+            if(Validar())
+            {
+                var guardo = articuloBLL.Guardar(this.articulo);
+                if (guardo)
+                {
+                    Notify.ShowNotification(
+                        titulo: "Exito",
+                        mensaje: "Guardado correctamente!",
+                        NotificationSeverity.Success);
+                    Nuevo();
+                }
+                else
+                {
+                    Notify.ShowNotification(
+                        titulo: "Error",
+                        mensaje: "Ocurrio un error y no fue posible guardar",
+                        NotificationSeverity.Error);
+                }
+            }
+        }
+        catch (Exception excepcion) { }
+    }
+
+    public void Eliminar()
+    {
+        try
+        {
+
+            if(Validar())
+            {
+                if (articuloBLL.Eliminar(this.articulo))
+                {
+                    Notify.ShowNotification(
+                        titulo: "Exito",
+                        mensaje: "Eliminado con Exito",
+                        NotificationSeverity.Success);
+                    Nuevo();
+                }
+                else
+                {
+                    Notify.ShowNotification(
+                        titulo: "Error",
+                        mensaje: "Ocurrio un error y no fue posible eliminar",
+                        NotificationSeverity.Error);
+                }
+
+            }
+            
+        }catch (Exception excepcion) { }
+    }
+
+    bool Validar()
+    {
+        return articulo.Descripcion != null && articulo.CategoriaId > 0
+        && articulo.Peso > 0;
+
+    }
+
+}

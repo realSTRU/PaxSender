@@ -1,0 +1,219 @@
+ @page "/R_Clientes"
+@page "/R_Clientes/{ClienteId:int}"
+
+@inject ClienteBLL clienteBLL
+@inject NotificationService Notify
+
+<EditForm Model="cliente" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="card shadow-lg">
+
+        <div class="card-header">
+            <h3 class="card-title">
+                Registro de clientes
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                    class="bi bi-truck" viewBox="0 0 16 16">
+                    <path
+                        d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+            </h3>
+        </div>
+
+        <div class="card-body">
+            <hr>
+
+            @*ClienteId*@
+
+                <div class="sml col-3">
+                        <label>ClienteId</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="cliente.ClienteId" class="form-control " />
+                            <div class="input-group-append">
+                                <div class="input-group-append">
+                                    <button @onclick="Buscar" class="btn btn-outline-primary" type="button" id="buscarButton">
+                            <i class="oi oi-magnifying-glass" />
+                        </button>
+
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <label>Nombre</label>
+                    <input type="text" @bind="cliente.Nombre" required placeholder="Nombre" class="form-control" />
+                    <ValidationMessage For="@(() => cliente.Nombre)" />
+                </div>
+                <div class="col-4">
+                    <label>Teléfono</label>
+                    <input type="Text" @bind="cliente.Telefono" required placeholder="Teléfono" class="form-control" />
+                    <ValidationMessage For="@(() => cliente.Telefono)" />
+                </div>
+                <div class="col-4">
+                    <label>Correo</label>
+                    <input @bind="cliente.Correo" required placeholder="Correo" class="form-control" />
+                    <ValidationMessage For="@(() => cliente.Correo)" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <label>Celular</label>
+                    <input type="text" @bind="cliente.Celular" placeholder="Celular" class="form-control" />
+                    <ValidationMessage For="@(() => cliente.Celular)" />
+                </div>
+                <div class="col-4">
+                    <label>Cédula</label>
+                    <input type="text" @bind="cliente.Cedula" placeholder="Cédula" class="form-control" />
+                    <ValidationMessage For="@(() => cliente.Cedula)" />
+                </div>
+                <div class="col-4">
+                    <label>RNC</label>
+                    <input type="text" @bind="cliente.RNC" placeholder="RNC" class="form-control" />
+                    <ValidationMessage For="@(() => cliente.RNC)" />
+                </div>
+            </div>
+             <div class="row">
+               <div class="col-4">
+                    <label>Direccion</label>
+                    <input type="text" @bind="cliente.Direccion" placeholder="Direccion" class="form-control" />
+                    <ValidationMessage For="@(() => cliente.Direccion)" />
+                </div>
+                <div class="col-4">
+                        <label>Fecha</label>
+                        <input type="date" Disabled @bind="cliente.Fecha_Registro"  class="form-control col-8 bg-fechasColor" />
+                    </div>
+            </div>
+        </div>
+
+        @*Botones*@
+        <div class="card-footer">
+            <div class="form-group text-left" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo" title="Nuevo cliente">
+                    Nuevo
+                </button>
+
+                <button type="submit" class="btn btn-lg btn-success" title="Guardar cliente">
+                    Guardar
+                </button>
+
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar" title="Eliminar cliente">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+
+    </div>
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public int? ClienteId { get; set; }
+    public Cliente cliente { get; set; } = new Cliente();
+    private int ultimoClienteId;
+
+    protected override void OnInitialized()
+    {
+        if (ClienteId.HasValue)
+        {
+            // si recibimos un {SistemaId:int} por parametro asignarlo
+            // y luego buscarla para que se vea en pantalla
+            cliente.ClienteId = ClienteId.Value;
+            Buscar();
+        }
+    }
+    public void Buscar()
+    {
+        var clienteEncontrado = clienteBLL.Buscar(cliente.ClienteId);
+        if (clienteEncontrado != null)
+        {
+            cliente = clienteEncontrado;
+        }
+        else
+        {
+            Notify.ShowNotification(
+            titulo: "Error de Busqueda",
+            mensaje: "Registro no encontrado",
+            NotificationSeverity.Error);
+        }
+    }
+
+    public void Nuevo()
+    {
+        this.cliente = new Cliente();
+    }
+
+    //Se inicio a agregar un metodo de control para evitar que se producta una excepcion en el metodo guardar
+    public void Guardar()
+    {
+        try
+        {
+            if (!Validar())
+            {
+                Notify.ShowNotification(
+                    titulo: "Validación",
+                    mensaje: "Error Revise los campos",
+                    NotificationSeverity.Error);
+                return;
+            }
+
+            if(Validar())
+            {
+                var guardo = clienteBLL.Guardar(this.cliente);
+                if (guardo)
+                {
+                    Notify.ShowNotification(
+                        titulo: "Exito",
+                        mensaje: "Guardado correctamente!",
+                        NotificationSeverity.Success);
+                    Nuevo();
+                }
+                else
+                {
+                    Notify.ShowNotification(
+                        titulo: "Error",
+                        mensaje: "Ocurrio un error y no fue posible guardar",
+                        NotificationSeverity.Error);
+                }
+            }
+            
+        }
+        catch (Exception exception) { }
+    }
+
+    //Se inicio a agregar un metodo de control para evitar que se producta una excepcion en el metodo eliminar
+    public void Eliminar()
+    {
+        try{
+            if(Validar())
+            {
+                if (clienteBLL.Eliminar(this.cliente))
+                {
+                    Notify.ShowNotification(
+                        titulo: "Exito",
+                        mensaje: "Eliminado con Exito",
+                        NotificationSeverity.Success);
+                    Nuevo();
+                }
+                else
+                {
+                    Notify.ShowNotification(
+                        titulo: "Error",
+                        mensaje: "Ocurrio un error y no fue posible eliminar",
+                        NotificationSeverity.Error);
+                }
+            }
+            
+        }catch(Exception exception){}
+    }
+
+    bool Validar()
+    {
+        return cliente.Nombre != null && cliente.Direccion != null && cliente.Cedula != null
+        && cliente.Celular != null && cliente.Telefono != null;
+    }
+}
