@@ -25,6 +25,7 @@ builder.Services.AddTransient<ArticuloBLL>();//bll
 builder.Services.AddScoped<NotificationService>();//ServicioDeNotificaciones
 builder.Services.AddScoped<DialogService>();//DialogService
 builder.Services.AddScoped<SucursalBLL>();//bll
+builder.Services.AddScoped<EntradaBLL>();//bll
 
 
 

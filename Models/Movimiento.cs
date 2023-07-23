@@ -5,7 +5,7 @@ public class Movimiento
 {
     [Key]
     public int OrdenID { get; set; }
-    public int ArticuloID { get; set; }
+    public int ArticuloId { get; set; }
     public int? Cantidad { get; set; }
     public int? cantidad_anterior { get; set; }
     public int? cantidad_Resultante {get; set;}

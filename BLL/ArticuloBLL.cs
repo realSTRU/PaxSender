@@ -56,6 +56,7 @@ namespace PaxSender.BLL
         {
             return _contexto.Articulo
                 .Where(c => c.ArticuloId== Id && c.Visible == true)
+                .AsNoTracking()
                 .SingleOrDefault();
         }
 

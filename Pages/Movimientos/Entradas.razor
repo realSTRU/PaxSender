@@ -1,0 +1,184 @@
+@page "/Entradas"
+
+
+@inject NotificationService notificationService
+@inject ArticuloBLL ArticuloBLL
+@inject  EntradaBLL EntradaBLL
+
+<head>
+    <style>
+        .Entrada {
+            display: inline-block;
+            padding: 5px;
+            align-items: center;
+            
+        }
+
+        .Entrada input {
+            border-radius: 50px;
+            background-color: #D9D9D9;
+            border-color: #D9D9D9;
+            border: 15px;
+            margin: 5px;
+            
+        }
+
+        .Entrada label {
+            margin: 5px;
+        }
+
+        .Entrada textarea {
+            background-color: #D9D9D9;
+            border-color: #D9D9D9;
+            border-radius: 15px;
+            width: 100%;
+        }
+
+        .Entrada select {
+            width: 200px;
+            height: 35px;
+            border-radius: 50px;
+            background-color: #D9D9D9;
+            border-color: #D9D9D9;
+            border: 15px;
+            margin: 5px;
+        }
+
+
+        
+    </style>
+</head>
+
+<body>
+
+    <RadzenCard class="rz-shadow-7 rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12">
+    <RadzenFieldset>
+            <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="add" class="me-1" /><b>Nuevo Entrada</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+    <RadzenDropDown AllowClear="true" TValue="int"  @bind-Value="entrada.ArticuloId"
+    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+    class="w-100" Name="Articulo" Placeholder="articulo"  Data="ArticuloBLL.GetList(o=>true)" TextProperty= "Descripcion"
+    ValueProperty="ArticuloId" style="border-radius: 50px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 5px;"
+    />
+
+    <div style="display: flex; align-items: flex-end;">
+        <div class="Entrada">
+        <label for="Costo">Cantidad:</label>
+        <RadzenNumeric  ShowUpDown="false" style="border-radius: 50px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 5px;"  name="Cantidad" @bind-Value="entrada.Cantidad"/>
+    </div>
+        <div class="Entrada">
+        <label for="Razon">Razon:</label>
+        <RadzenTextBox  name="Razon" @bind-Value="entrada.Razon"/>
+    </div>
+    <div class="d-flex justify-content-between">
+        <div class="Entrada">
+            <label for="Precio">Fecha:</label>
+            <RadzenDatePicker @bind-Value=@entrada.Fecha Disabled ="true" ShowTime="true" HourFormat="12" DateFormat="MM/dd/yyyy h:mm tt" />
+        </div>
+            <div>
+                <a href="/S_Compras"><button type="button" class="btn btn-primary"
+                style="padding-left: 50px;padding-right: 50px; border-radius:50px; Background-Color:#28363c; border-color:#28363c; margin:10px;"
+                ><em><b>Seguimiento de compras</b></em></button></a>
+        </div>
+        
+
+    </div>
+    
+   
+    </div>
+    <center>
+         <button type="button" class="btn btn-primary;"
+            style="padding-left: 50px;padding-right: 50px; color:#D9D9D9;  border-radius:50px; Background-Color:#6DC582; border-color:#6DC582; margin:10px;"
+            @onclick="Guardar"><b>Registrar</b></button>
+    
+    </center>
+       
+    </ChildContent>
+    </RadzenFieldset>
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+    AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+    Data="EntradaBLL.GetList()" TItem="Entrada" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+        <Columns>
+                <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="Articulo" Frozen="true" Title="Acciones">
+            <Template Context="Item">
+                <RadzenLink Path=@($"V_Articulo/{Item.ArticuloId}") Text="Ver" />
+            </Template>
+                </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Entrada" Property="ArticuloId" Title="Articulo"/>
+            <RadzenDataGridColumn TItem="Entrada" Property="cantidad_anterior" Title="Cantidad Anterior"/>
+            <RadzenDataGridColumn TItem="Entrada" Property="Cantidad" Title="Cantidad de Ajuste"/>
+            <RadzenDataGridColumn TItem="Entrada" Property="cantidad_Resultante" Title="Cantidad de Resultante"/>
+            <RadzenDataGridColumn TItem="Entrada" Property="Razon" Title="Razon"/>
+            <RadzenDataGridColumn TItem="Entrada" Property="Fecha" Title="Fecha"/>
+
+
+        </Columns>
+
+    </RadzenDataGrid>
+   
+
+    </RadzenCard>
+</body>
+@code {
+    public Entrada entrada { get; set; } = new Entrada();
+
+    
+    
+    protected override void OnInitialized()
+    {
+
+    }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+    }
+
+
+    public void Nuevo()
+    {
+        this.entrada = new Entrada();
+    }
+
+
+
+    public void Guardar()
+    {
+        if(Validar() && this.entrada.Cantidad > 0)
+        {
+            this.entrada.cantidad_anterior = ArticuloBLL.Buscar(this.entrada.ArticuloId).Existencia;
+            this.entrada.cantidad_Resultante= this.entrada.cantidad_anterior + this.entrada.Cantidad;
+            if(EntradaBLL.Guardar(this.entrada))
+            {
+                this.Nuevo();
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });
+            }
+        }
+        else
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Erorr de entrada", Detail = "Campos invalidos", Duration = 4000 });
+
+        }
+
+
+        //Console.WriteLine("Campos no validos o no completados");
+    }
+
+    public bool Validar()
+    {
+        if(this.entrada.ArticuloId!= null && this.entrada.Cantidad != null&& this.entrada.Razon != null && this.entrada.Fecha != null)
+        {
+            System.Console.WriteLine("Pase 1");
+                return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
