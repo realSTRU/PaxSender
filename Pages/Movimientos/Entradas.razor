@@ -79,11 +79,7 @@
             <label for="Precio">Fecha:</label>
             <RadzenDatePicker @bind-Value=@entrada.Fecha Disabled ="true" ShowTime="true" HourFormat="12" DateFormat="MM/dd/yyyy h:mm tt" />
         </div>
-            <div>
-                <a href="/S_Compras"><button type="button" class="btn btn-primary"
-                style="padding-left: 50px;padding-right: 50px; border-radius:50px; Background-Color:#28363c; border-color:#28363c; margin:10px;"
-                ><em><b>Seguimiento de compras</b></em></button></a>
-        </div>
+            
         
 
     </div>
@@ -91,10 +87,21 @@
    
     </div>
     <center>
-         <button type="button" class="btn btn-primary;"
-            style="padding-left: 50px;padding-right: 50px; color:#D9D9D9;  border-radius:50px; Background-Color:#6DC582; border-color:#6DC582; margin:10px;"
-            @onclick="Guardar"><b>Registrar</b></button>
+        <div class="row; d-flex justify-content-around;">
+            <div>
+                 <button type="button" class="btn btn-primary;"
+                style="padding-left: 50px;padding-right: 50px; color:#D9D9D9;  border-radius:50px; Background-Color:#6DC582; border-color:#6DC582; margin:10px;"
+                @onclick="Guardar"><b>Registrar</b></button>
+            </div>
+            <div>
+                <a href="/S_Compras"><button type="button" class="btn btn-primary"
+                style="padding-left: 50px;padding-right: 50px; border-radius:50px; Background-Color:#28363c; border-color:#28363c; margin:10px;"
+                ><em><b>Seguimiento de compras</b></em></button></a>
+            </div>
+
     
+        </div>
+         
     </center>
        
     </ChildContent>
@@ -104,19 +111,12 @@
     Data="EntradaBLL.GetList()" TItem="Entrada" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
 
         <Columns>
-                <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="Articulo" Frozen="true" Title="Acciones">
-            <Template Context="Item">
-                <RadzenLink Path=@($"V_Articulo/{Item.ArticuloId}") Text="Ver" />
-            </Template>
-                </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="Entrada" Property="ArticuloId" Title="Articulo"/>
             <RadzenDataGridColumn TItem="Entrada" Property="cantidad_anterior" Title="Cantidad Anterior"/>
             <RadzenDataGridColumn TItem="Entrada" Property="Cantidad" Title="Cantidad de Ajuste"/>
             <RadzenDataGridColumn TItem="Entrada" Property="cantidad_Resultante" Title="Cantidad de Resultante"/>
             <RadzenDataGridColumn TItem="Entrada" Property="Razon" Title="Razon"/>
             <RadzenDataGridColumn TItem="Entrada" Property="Fecha" Title="Fecha"/>
-
-
         </Columns>
 
     </RadzenDataGrid>

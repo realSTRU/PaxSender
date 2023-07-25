@@ -1,0 +1,165 @@
+@page "/Salidas"
+
+@inject NotificationService notificationService
+@inject ArticuloBLL ArticuloBLL
+@inject  SalidaBLL SalidaBLL
+
+<head>
+    <style>
+        .Entrada {
+            display: inline-block;
+            padding: 5px;
+            align-items: center;
+        }
+
+        .Entrada input {
+            border-radius: 50px;
+            background-color: #D9D9D9;
+            border-color: #D9D9D9;
+            border: 15px;
+            margin: 5px;
+        }
+
+        .Entrada label {
+            margin: 5px;
+        }
+
+        .Entrada textarea {
+            background-color: #D9D9D9;
+            border-color: #D9D9D9;
+            border-radius: 15px;
+            width: 100%;
+        }
+
+        .Entrada select {
+            width: 200px;
+            height: 35px;
+            border-radius: 50px;
+            background-color: #D9D9D9;
+            border-color: #D9D9D9;
+            border: 15px;
+            margin: 5px;
+        }
+
+
+       
+    </style>
+</head>
+
+<body>
+    
+
+    <RadzenCard class="rz-shadow-7 rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12">
+    <RadzenFieldset>
+            <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="add" class="me-1" /><b>Nuevo Salida</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+
+    <RadzenDropDown AllowClear="true" TValue="int"  @bind-Value="salida.ArticuloId"
+    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+    class="w-100" Placeholder="Articulo"  Data="ArticuloBLL.GetList(o => true)" TextProperty= "Descripcion"
+    ValueProperty="ArticuloId" style="border-radius: 50px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 5px;"
+     />
+
+
+        <div class="Entrada">
+        <label for="Costo">Cantidad:</label>
+        <RadzenNumeric  ShowUpDown="false" style="border-radius: 50px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 5px;"  name="Cantidad" @bind-Value="salida.Cantidad"/>
+    </div>
+        <div class="Entrada">
+        <label for="Razon">Razon:</label>
+        <RadzenTextBox  name="Razon" @bind-Value="salida.Razon"/>
+    </div>
+        <div class="Entrada">
+        <label for="Precio">Fecha:</label>
+        <RadzenDatePicker  name="Fecha " @bind-Value="salida.Fecha"/>
+    </div>
+
+    <center>
+         <button type="button" class="btn btn-primary;"
+            style="padding-left: 50px;padding-right: 50px; color:#D9D9D9;  border-radius:50px; Background-Color:#6DC582; border-color:#6DC582; margin:10px;"
+            @onclick="Guardar"><b>Registrar</b></button>
+            
+    </center>
+    </ChildContent>
+    </RadzenFieldset>
+<RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+    AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+    Data="SalidaBLL.GetList()" TItem="Salida" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+        <Columns>
+            <RadzenDataGridColumn TItem="Salida" Property="ArticuloId" Title="Articulo" />
+            <RadzenDataGridColumn TItem="Salida" Property="Cantidad" Title="Cantidad" />
+            <RadzenDataGridColumn TItem="Salida" Property="Razon" Title="Razon" />
+            <RadzenDataGridColumn TItem="Salida" Property="Fecha" Title="Fecha" />
+
+
+        </Columns>
+
+    </RadzenDataGrid>
+    </RadzenCard>
+</body>
+@code {
+    public Salida salida { get; set; } = new Salida();
+    
+    protected override void OnInitialized()
+    {
+
+    }
+
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+    }
+
+
+    public void Nuevo()
+    {
+        this.salida = new Salida();
+    }
+
+    public void Guardar()
+    {
+        var articulo = ArticuloBLL.Buscar(salida.ArticuloId);
+        if(salida.Cantidad < articulo.Existencia )
+        {
+            if(Validar())
+            {
+                if(SalidaBLL.Guardar(this.salida))
+                {
+                this.Nuevo();
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });
+                }
+            }
+            else
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error de Registro", Detail = "Campos Vacios o mal asignados", Duration = 4000 });
+            }
+        }
+        else
+        {
+            ShowNotification(new NotificationMessage {Severity= NotificationSeverity.Error, Summary ="Error de existencia"
+            , Detail =$"Solo restan {articulo.Existencia} debes de elegir una cantidad valida."});
+        }
+
+
+        //Console.WriteLine("Campos no validos o no completados");
+    }
+
+        public bool Validar()
+        {
+        if(this.salida.ArticuloId!= null && this.salida.Cantidad != null&& this.salida.Razon != null && this.salida.Fecha != null)
+        {
+            System.Console.WriteLine("Pase 1");
+                return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+}
