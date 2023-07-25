@@ -46,9 +46,9 @@ public class PedidoDetalle
 
     public int Cantidad {get; set;}
 
-    public double Precio {get; set;}
+    public double Precio {get; set;} = 0;
 
-    public double importe {
+    public double? Importe {
 
         get  {return Cantidad * Precio;}
 
@@ -64,9 +64,9 @@ public enum ESTADOPEDIDO{
 
     ENCAMINO,
 
-    RECIBIDA,
+    RECIBIDO,
 
-    LIQUIDADA
+    LIQUIDADO
 
 
 

@@ -1,0 +1,370 @@
+@page "/R_Pedidos"
+@page "/R_Pedidos/{PedidoId:int}"
+
+
+@inject PedidoBLL pedidoBLL
+@inject ArticuloBLL articulos
+@inject DialogService DialogService
+@inject IJSRuntime IJS
+@inject NotificationService notificationService
+
+<PageTitle>Registro de pedidos .</PageTitle>
+
+<head>
+    <style>
+        .hidden{
+            display: none;
+        }
+
+        .form-select{
+            border: none;
+            width: 150px;
+        }
+        .form-floating {
+            width: 15%;
+        }
+            .Entrada{
+        display: flex;
+        padding: 5px;
+        align-items: center;
+        
+    }
+    .Entrada input{
+        background-color:#D9D9D9;
+        width: 100%;
+    }
+    .Entrada label
+    {
+        margin: 5px;
+    }
+    .Entrada textarea{
+        background-color:#D9D9D9;
+        border-color: #D9D9D9;
+        border-radius: 15px;
+        width: 100%;
+    }
+
+    </style>
+</head>
+
+<body>
+       <RadzenCard class="rz-shadow-7 rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12">
+    <RadzenFieldset>
+            <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="feed" class="me-1" /><b>Realizar servicio de pedidos</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+
+        <RadzenStack>
+            
+                
+            <div  class="d-flex justify-content-between">
+                <div class="Entrada">
+                    <div class="input-group">
+                        <RadzenLabel>PedidoId:</RadzenLabel>
+                        <RadzenNumeric ShowUpDown="false" style=" background-color: #D9D9D9; border-color: #D9D9D9;" @bind-Value="pedido.PedidoId"/>
+                        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="Buscar"><RadzenIcon Icon="find_replace"/></RadzenButton>
+                    </div>
+                </div>
+                    
+                <br>
+                <div>
+                    <div class="Entrada ">
+                        <div class="input-group ">
+                            <RadzenLabel >Fecha:</RadzenLabel>
+                            <RadzenDatePicker @bind-Value=@pedido.Fecha ShowTime="true" HourFormat="12" DateFormat="MM/dd/yyyy" Name="Fecha" />
+                            <RadzenRequiredValidator Component="Fecha" Text="Nombre es Campo Requerido" Popup=true Style="position: absolute"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div  class="Entrada col-2">
+                 <RadzenDropDown  AllowClear="true" TValue="int" Name="Articulo"
+                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                             class="w-100" Placeholder="Articulo"  Data="articulos.GetList(o => true)" TextProperty="Descripcion"
+                             @bind-Value=@detalle.ArticuloId ValueProperty="ArticuloId" style="border-radius: 25px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 3px; height:40px"
+                             />
+                </div>
+                <div class="Entrada col-2">
+                    <RadzenNumeric  style=" background-color: #D9D9D9; border-color: #D9D9D9;" @bind-Value="detalle.Cantidad"></RadzenNumeric>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="AgregarDetalle"><RadzenIcon Icon="playlist_add"/></RadzenButton>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p></p>
+                </div>
+            </div>
+
+
+        </RadzenStack>
+        <RadzenFieldset>
+        <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="feed" class="me-1" /><b>Detalles</b>
+            </span>
+        </HeaderTemplate>
+
+        <ChildContent> 
+            <table class="table table-striped" style="backgroud-color:white">
+                <thead>
+                    <tr>
+                        <th scope="col">#ArticuloId</th>
+                        <th scope="col">Articulo</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Importe</th>
+                        <th scope="col">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        @foreach(var item in this.pedido.DetallePedido)
+                        {
+                            <tr>
+                            <td>@item.ArticuloId</td>
+                            <td>@articulos.Buscar(item.ArticuloId).Descripcion</td>
+                            <td>@item.Precio</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.Importe</td>
+                            <td><RadzenButton ButtonStyle="ButtonStyle.Danger" Click="()=>EliminarDetalle(item.DetalleId)" Icon="delete" /></td>
+                            </tr>
+                        }
+                
+                </tbody>
+            </table>
+            </ChildContent> 
+            </RadzenFieldset>
+
+            <div  class="d-flex justify-content-between">
+                <div class="Entrada" style="display:flex; justify-items:center;">
+                    <div class="input-group">
+                        <RadzenLabel For="Items">Total de items:</RadzenLabel>
+                        <RadzenNumeric Disabled="true" ShowUpDown="false" @bind-Value="CantidadTotal" Name="Items" />
+                    </div>
+                </div>
+                <div class="Entrada">
+                    <div class="input-group">
+                        <RadzenLabel For="Importe">Importe Total:</RadzenLabel>
+                        <RadzenNumeric Disabled="true" ShowUpDown="false" @bind-Value="ImporteTotal" Name="Importe" />
+                    </div>
+                </div>
+            </div>
+
+        <RadzenStack>
+            <center>
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" style="padding-left: 50px;padding-right: 50px; border-radius:50px; Background-Color:#3AB5F4; border-color:#3AB5F4; margin:10px;" Click="Guardar" >Guardar</RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" style="padding-left: 50px;padding-right: 50px; border-radius:50px; Background-Color:#3AB5F4; border-color:#3AB5F4; margin:10px;" Click="Nuevo" >Limpiar compra</RadzenButton>
+                 <button type="button" class="btn btn-danger" style="padding-left: 50px;padding-right: 50px; border-radius:50px; margin:10px;" @onclick="ShowInlineDialogDelete">Eliminar</button>
+             </center>
+        </RadzenStack>
+
+
+         </ChildContent>
+    </RadzenFieldset>
+    </RadzenCard>   
+    
+    
+</body>
+
+
+@code
+{
+    [Parameter]
+    public int PedidoId {get; set;}
+    public int CompraRec {get;set;} = 0;
+
+    public Pedido pedido {get; set;} = new Pedido();
+
+    public PedidoDetalle detalle {get; set;} = new PedidoDetalle();
+
+    public List<Articulo> L_Articulos {get; set;} = new List<Articulo>();
+    
+
+    public IEnumerable<int> Cantidades{get;set;} 
+    public int? CantidadTotal {get;set;}
+
+    public IEnumerable<double?> Importes{get;set;} 
+    public double? ImporteTotal {get;set;}
+    
+    protected override void OnInitialized()
+    {
+        L_Articulos = articulos.GetList(o=>true);
+
+        if(PedidoId > 0)
+        {
+            this.pedido.PedidoId = PedidoId;
+            Buscar();
+        }
+        if(PedidoId==-1)
+        {
+            foreach(var articulo in articulos.GetListReorden())
+            {
+                detalle.ArticuloId =articulo.ArticuloId;
+                detalle.Cantidad = articulo.Num_Reorden;
+                detalle.Precio = articulo.Costo;
+
+                AgregarDetalle();
+            }
+                
+        }
+    
+        CalcTotales();
+    }
+
+    void Buscar()
+    {
+        var pedidoEncontrado = pedidoBLL.Buscar(pedido.PedidoId);
+        
+
+        if(pedidoEncontrado != null)
+        {
+            this.pedido = pedidoEncontrado;
+        }
+    }
+    void CalcTotales()
+    {
+        Cantidades= from detalle in pedido.DetallePedido select detalle.Cantidad;
+        CantidadTotal = Cantidades.Sum();
+
+        Importes= from detalle in pedido.DetallePedido select detalle.Importe;
+        ImporteTotal = Importes.Sum();
+    }
+    /*
+        public async Task Imprimir()
+        {
+            await IJS.InvokeAsync<object>("open", new object[] { $"/I_OrdenCompra/{CompraRec }","_blank"});
+        }
+
+    */
+    
+    void AgregarDetalle()
+    {
+        if(this.detalle.ArticuloId != null && this.detalle.Cantidad > 0)
+        {
+            double costoA = articulos.Buscar(this.detalle.ArticuloId).Costo;
+            this.detalle.Precio= costoA;
+            this.pedido.DetallePedido.Add(this.detalle);
+            this.detalle = new PedidoDetalle();
+            foreach(var item in this.pedido.DetallePedido)
+            {
+                this.pedido.Total += item.Importe;
+            }
+            
+            CalcTotales();
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Detalle añadido con exito!", Duration = 4000 });
+        }
+        else
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error al agregar detalle", Detail = "Campo de detalle vacio", Duration = 4000 });
+        }
+        
+    }
+
+    public void EliminarDetalle(int DetalleId)
+    {
+        this.pedido.DetallePedido.RemoveAll(d => d.DetalleId == DetalleId);
+        foreach(var item in this.pedido.DetallePedido)
+        {
+            this.pedido.Total += item.Importe;
+        }
+        CalcTotales();
+
+        
+    }
+
+    void Nuevo()
+    {
+        this.pedido= new Pedido();
+        ImporteTotal = 0;
+        CantidadTotal = 0;
+    }
+
+    void Eliminar()
+    {
+        if(Validar() && this.pedido.DetallePedido != null  && ImporteTotal > 0)
+        {
+            pedidoBLL.Eliminar(this.pedido);
+            Nuevo();
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Borrado con exito", Duration = 4000 });
+        }
+        else
+        {
+            Console.WriteLine("No se ha borrado nada");
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se ha borrado nada", Detail="Errores al borrar la compra, falta algun dato",Duration = 4000 });
+        }
+    }
+
+    void Guardar()
+    {
+        if(Validar() && this.pedido.DetallePedido != null && ImporteTotal > 0)
+        {
+            pedidoBLL.Guardar(this.pedido);
+            CompraRec = pedido.PedidoId;
+            this.Nuevo();
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });
+            //ShowInlineDialogPrint();
+        }
+        else
+        {
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "No se ha guardado nada", Detail = "Porfavor complete los campos de este formulario", Duration = 4000 });
+        }
+    }
+
+    bool Validar()
+    {
+        return this.pedido.DetallePedido != null;
+    }
+
+
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+    }
+
+
+    async Task ShowInlineDialogDelete()
+    {
+        var result = await DialogService.OpenAsync("Confirmacion de accion", ds =>
+        @<div>
+            <div class="row">
+                <div class="Entrada col">
+                <h4>Esta seguro que desea eliminar este registro?</h4>
+                <br>
+                <hr>
+                    <center>
+                    <a href="/"><RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="Eliminar"  ><RadzenIcon Icon="delete"/>"SI (Eliminar)"</RadzenButton></a>
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="() => ds.Close(false)"  ><RadzenIcon Icon="cancel"/>"NO"</RadzenButton>
+                    </center>
+                </div>
+            </div>
+        </div>);
+    }
+
+
+    /*
+    async Task ShowInlineDialogPrint()
+    {
+        var result = await DialogService.OpenAsync("Confirmacion de accion", ds =>
+        @<div>
+            <div class="row">
+                <div class="Entrada col">
+                <h4>Desea imprimir este registro?</h4>
+                <br>
+                    <center>
+                    <a href="/"><RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="Imprimir"   ><RadzenIcon Icon="print"/>"SI()"</RadzenButton></a>
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Click="() => ds.Close(false)"  ><RadzenIcon Icon="cancel"/>"NO"</RadzenButton>
+                    </center>
+                </div>
+            </div>
+        </div>);
+    }
+ 
+    */
+    
+
+
+
+}

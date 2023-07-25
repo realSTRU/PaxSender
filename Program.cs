@@ -27,6 +27,7 @@ builder.Services.AddScoped<DialogService>();//DialogService
 builder.Services.AddScoped<SucursalBLL>();//bll
 builder.Services.AddScoped<EntradaBLL>();//bll
 builder.Services.AddScoped<SalidaBLL>();//bll
+builder.Services.AddScoped<PedidoBLL>();//bll
 
 
 
