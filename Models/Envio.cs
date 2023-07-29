@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-public class Pedido
+public class Envio
 {
     [Key]
-    public int PedidoId { get; set; }
+    public int EnvioId { get; set; }
 
     public int ClienteId {get; set;}
 
@@ -16,25 +16,31 @@ public class Pedido
 
     public double?  Total { get; set; }
 
+    public double Total_Envio {get; set;}
+
     public string Estado { get; set; }
+
+    public string Etiqueta {get; set;}
+
+    public string Destinatario_Referencia {get; set;}
 
     public bool Visible {get; set;}
 
     [ForeignKey("PedidoId")]
-    public List<PedidoDetalle> DetallePedido {get; set;}
+    public List<EnvioDetalle> DetalleEnvio {get; set;}
 
-    public Pedido()
+    public Envio()
     {
         this.Fecha = DateTime.Now;
-        this.DetallePedido = new List<PedidoDetalle>();
+        this.DetalleEnvio= new List<EnvioDetalle>();
         this.Visible = true;
-        this.Estado = ESTADOPEDIDO.PENDIENTE.ToString();
+        this.Estado = ESTADOENVIO.PENDIENTE.ToString();
 
     }
 
 }
 
-public class PedidoDetalle
+public class EnvioDetalle
 {
     [Key]
     public int DetalleId  { get; set; }
@@ -45,19 +51,23 @@ public class PedidoDetalle
 
     public int Cantidad {get; set;}
 
-    public double Precio {get; set;} = 0;
+    public double Peso {get; set;}
 
-    public double? Importe {
+    public double? Peso_Total {
 
-        get  {return Cantidad * Precio;}
+        get  {return Cantidad * Peso;}
 
     }
 
 
 }
-public enum ESTADOPEDIDO{
+public enum ESTADOENVIO{
 
     PENDIENTE,
+
+    EMPACADO,
+
+    ENCAMINO,
 
     RECIBIDO,
 
@@ -65,6 +75,16 @@ public enum ESTADOPEDIDO{
 
 
 
+
+
+
+}
+
+public enum CONDICION
+{
+    FRAGIL,
+
+    NORMAL,
 
 
 

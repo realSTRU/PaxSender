@@ -1,0 +1,262 @@
+@page "/Seguimientos"
+
+<PageTitle>Seguimiento.</PageTitle>
+
+@inject ArticuloBLL Articulos
+@inject EntradaBLL Entradas
+@inject SalidaBLL Salidas
+@inject PedidoBLL Pedidos
+@inject NotificationService Notify
+@inject SuplidorBLL suplidores
+
+<head>
+    <style>
+        .hidden{
+            display: none;
+        }
+
+        .form-select{
+            border: none;
+            width: 150px;
+        }
+        .form-floating {
+            width: 15%;
+        }
+            .Entrada{
+        display: flex;
+        padding: 5px;
+        align-items: center;
+        width: 100%;
+    }
+    .Entrada input{
+        border-radius: 50px;
+        background-color:#D9D9D9;
+        border-color: #D9D9D9;
+        border: 15px;
+        width: 100%;
+    }
+    .Entrada label
+    {
+        margin: 5px;
+    }
+    .Entrada textarea{
+        background-color:#D9D9D9;
+        border-color: #D9D9D9;
+        border-radius: 15px;
+        width: 100%;
+    }
+       
+
+
+    </style>
+</head>
+<body>
+    <RadzenCard class="rz-shadow-7 rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12">
+    <RadzenFieldset>
+            <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="local_shipping" class="me-1" /><b>(Estado/Seguimiento/Monitoreo) de servicios y articulos .</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+
+<RadzenTabs>
+    <Tabs>
+        
+        <RadzenTabsItem Text="Estado de la compra" >
+            <div style="display:flex; justify-items:center;">
+        <div class="Entrada" style="display:flex; justify-items:center;">
+            <label for="PedidoId">Pedido#</label>
+            <RadzenNumeric type="PedidoId" id="PedidoId"  Disabled="true" @bind-Value="pedido.PedidoId" name="Descripcion"/>
+        </div>
+        
+        <div class="input-group Entrada"style="display:flex; justify-items:center;">
+            
+            <div class="input-group ">
+                <label for="Compra">Estado Actual</label>
+                <select class ="form-select"id="Compra" name="Compra" @bind="pedido.Estado">
+                    @foreach (var item in Estados)
+                    {
+                        <option value="@item"> @item</option>
+                    }
+
+                </select>
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="CambiarEstado" ><RadzenIcon Icon="done" /></RadzenButton>
+            </div>
+            
+        </div>
+        </div>
+
+        <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+        AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+        Data="Pedidos.GetList()" TItem="Pedido" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+            <Columns>
+                    <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="Pedido" Frozen="true" Title="Acciones">
+                <Template Context="Item">
+                    <button @onclick="() => Buscar(Item.PedidoId)" style="border:none;" ><RadzenBadge  BadgeStyle="BadgeStyle.Info"  Text="Seleccionar"   /></button>
+                </Template>
+                    </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="Pedido" Property="PedidoId" Title="PedidoId#" />
+                <RadzenDataGridColumn TItem="Pedido" Property="Fecha" Title="Fecha" />
+                <RadzenDataGridColumn TItem="Pedido" Property="Estado" Title="Estado compra." />
+                
+            </Columns>
+
+        </RadzenDataGrid>
+        
+
+        </RadzenTabsItem >
+        <RadzenTabsItem Text="Estado de la compra" >
+            <div style="display:flex; justify-items:center;">
+            <div class="Entrada" style="display:flex; justify-items:center;">
+                <label for="PedidoId">Pedido#</label>
+                <RadzenNumeric type="PedidoId" id="PedidoId"  Disabled="true" @bind-Value="pedido.PedidoId" name="Descripcion"/>
+            </div>
+            
+            <div class="input-group Entrada"style="display:flex; justify-items:center;">
+                
+                <div class="input-group ">
+                    <label for="Compra">Estado Actual</label>
+                    <select class ="form-select"id="Compra" name="Compra" @bind="pedido.Estado">
+                        @foreach (var item in Estados)
+                        {
+                            <option value="@item"> @item</option>
+                        }
+
+                    </select>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="CambiarEstado" ><RadzenIcon Icon="done" /></RadzenButton>
+                </div>
+                
+            </div>
+            </div>
+
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+            AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+            Data="Pedidos.GetList()" TItem="Pedido" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+                <Columns>
+                        <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="Pedido" Frozen="true" Title="Acciones">
+                    <Template Context="Item">
+                        <button @onclick="() => Buscar(Item.PedidoId)" style="border:none;" ><RadzenBadge  BadgeStyle="BadgeStyle.Info"  Text="Seleccionar"   /></button>
+                    </Template>
+                        </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="Pedido" Property="PedidoId" Title="PedidoId#" />
+                    <RadzenDataGridColumn TItem="Pedido" Property="Fecha" Title="Fecha" />
+                    <RadzenDataGridColumn TItem="Pedido" Property="Estado" Title="Estado compra." />
+                    
+                </Columns>
+
+            </RadzenDataGrid>
+            
+
+        </RadzenTabsItem >
+        
+
+        </Tabs>
+    </RadzenTabs>
+
+
+
+
+    </ChildContent>
+    </RadzenFieldset>
+    </RadzenCard>
+    </body>
+
+@code {
+
+    [Parameter]
+    public int PedidoId {get; set;}
+    public Pedido pedido {get; set;} = new Pedido();
+    public Salida salida { get; set; } = new Salida();
+    public Entrada entrada { get; set; } = new Entrada();
+    
+    public string Estado {get; set;}
+    List<ESTADOPEDIDO> Estados = Enum.GetValues(typeof(ESTADOPEDIDO))
+    .Cast<ESTADOPEDIDO>()
+    .ToList();
+
+    protected override void OnInitialized()
+    {
+            
+    }
+    
+
+    void ShowNotification(NotificationMessage message)
+    {
+        Notify.Notify(message);
+    }
+
+    private void Buscar(int Id)
+    {
+        var pedidoEncontrado = Pedidos.Buscar(Id);
+        if (pedidoEncontrado != null)
+        {
+            
+            this.pedido = pedidoEncontrado;
+
+        }
+        
+    }
+
+    void CambiarEstado()
+    {
+        
+        
+        if(Validar())
+        {
+            if(this.pedido.Estado.Contains("LIQUIDADO"))
+            {
+
+                foreach(var item in this.pedido.DetallePedido )
+                {
+                    entrada.Razon = "Articulo comprado";
+                    entrada.Cantidad = item.Cantidad;
+                    entrada.cantidad_anterior = Articulos.Buscar(item.ArticuloId).Existencia;
+                    entrada.ArticuloId = item.ArticuloId;
+                    entrada.cantidad_Resultante = item.Cantidad + entrada.cantidad_anterior;
+                    Entradas.Insertar(entrada);
+                    this.entrada = new Entrada();
+
+                }
+                Pedidos.Guardar(this.pedido);
+                Notify.ShowNotification(
+                        titulo: "Cambio de estado!",
+                        mensaje: "Realizado con exito",
+                        NotificationSeverity.Error);
+            }
+            else
+            {
+                Pedidos.Guardar(this.pedido);
+                Notify.ShowNotification(
+                        titulo: "Cambio de estado!",
+                        mensaje: "Realizado con exito",
+                        NotificationSeverity.Error);
+                
+                
+                
+            
+            }
+
+        }
+        else
+        {
+            Notify.ShowNotification(
+                        titulo: "Error",
+                        mensaje: "No fue posible cambiar el estado, Revise los campos",
+                        NotificationSeverity.Error);
+        }
+
+        
+
+    }
+ 
+    public bool Validar() 
+    {
+        var pedidoEncotrado = Pedidos.Buscar(pedido.PedidoId);
+        return pedidoEncotrado!= null;
+    }  
+
+   
+}

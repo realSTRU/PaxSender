@@ -3,6 +3,8 @@
 
 @inject ArticuloBLL articuloBLL
 @inject CategoriaBLL categoriaBLL
+@inject SuplidorBLL SuplidorBLL
+@inject AlmacenBLL AlmacenBLL
 @inject NotificationService Notify
 
  <EditForm Model="articulo" OnValidSubmit="Guardar">
@@ -74,6 +76,33 @@
                         </div>
                     </div>
 
+                    <div class="row d-flex justify-content-around">
+                       <div class="col-4">
+                            <label>Categoría</label>
+                            <select @bind="articulo.SuplidorId"  placeholder="Selecciona una suplidor" class="form-select">
+                                @foreach (var item in L_Suplidores)
+                                {
+                                                <option value="@item.SuplidorId">@item.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label>Almacen</label>
+                            <select @bind="articulo.AlmacenId"  placeholder="Selecciona una categoria" class="form-select">
+                                @foreach (var item in L_Almacenes)
+                                {
+                                                <option value="@item.AlmacenId">@item.Identificador</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        
+                        <div class="col-4">
+                            <label>&nbsp;</label> <!-- Espacio en blanco para alinear con las etiquetas anteriores -->
+                            <!-- Agregar más campos si es necesario -->
+                        </div>
+                    </div>
+
                 
             </RadzenStack>
             
@@ -103,6 +132,10 @@
     public Articulo articulo { get; set; } = new Articulo();
 
     public List<Categoria> L_Categorias = new List<Categoria>();
+    
+    public List<Almacen> L_Almacenes = new List<Almacen>();
+
+    public List<Suplidor> L_Suplidores = new List<Suplidor>();
 
     protected override void OnInitialized()
     {
@@ -115,6 +148,8 @@
         }
 
         L_Categorias = categoriaBLL.GetList(c => true);
+        L_Almacenes = AlmacenBLL.GetList(c => true);
+        L_Suplidores = SuplidorBLL.GetList(c => true);
 
     }
     public void Buscar()
@@ -211,7 +246,7 @@
     bool Validar()
     {
         return articulo.Descripcion != null && articulo.CategoriaId > 0
-        && articulo.Peso > 0;
+        && articulo.Peso > 0 && articulo.SuplidorId > 0 && articulo.AlmacenId > 0;
 
     }
 

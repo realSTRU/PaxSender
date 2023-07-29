@@ -28,6 +28,8 @@ builder.Services.AddScoped<SucursalBLL>();//bll
 builder.Services.AddScoped<EntradaBLL>();//bll
 builder.Services.AddScoped<SalidaBLL>();//bll
 builder.Services.AddScoped<PedidoBLL>();//bll
+builder.Services.AddScoped<AlmacenBLL>();//bll
+builder.Services.AddScoped<EnvioBLL>();//bll
 
 
 

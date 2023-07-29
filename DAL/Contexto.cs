@@ -14,6 +14,9 @@ public class Contexto: DbContext
     public DbSet<Entrada> Entrada {get; set;}
     public DbSet<Sucursal> Sucursal {get; set;}
 
+    public DbSet<Almacen> Almacen {get; set;}
+
+    public DbSet<Envio> Envio {get; set;}
     public DbSet<Cliente> Cliente {get; set;}
 
     public DbSet<Articulo> Articulo{get; set;}

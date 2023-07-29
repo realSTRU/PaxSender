@@ -1,0 +1,174 @@
+ @page "/R_Almacenes"
+
+@page "/R_Almacenes/{AlmacenId:int}"
+@inject AlmacenBLL AlmacenBLL
+@inject NotificationService Notify
+
+
+@* Registro de categoria de productos *@
+@inject AuthenticationStateProvider Authentication
+
+<EditForm Model="almacen" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+     <RadzenCard class="rz-shadow-7 rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12">
+        <RadzenFieldset>
+            <HeaderTemplate>
+                <span class="d-inline-flex align-items-center align-middle">
+                    <RadzenIcon Icon="inventory" class="me-1" /><b>Registro de almacenes.</b>
+                </span>
+            </HeaderTemplate>
+            <ChildContent>
+
+            <RadzenStack>
+                <div class="sml col-3">
+                        <label>AlmacenId</label>
+                        <div class="input-group">
+                            <input type="number" @bind="almacen.AlmacenId" class="form-control " />
+                            <div class="input-group-append">
+                                <div class="input-group-append">
+                                    <button @onclick="Buscar" class="btn btn-outline-primary" type="button" id="buscarButton">
+                            <i class="oi oi-magnifying-glass" />
+                        </button>
+
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+        @*...................... Descripcion ......................*@
+
+                <div class="row">
+
+                    <div class="sml col-3">
+                        <label>Identificador Almacen</label>
+                        <input type="text" required @bind="almacen.Identificador" placeholder="Identificador" class="form-control" />
+                        <ValidationMessage For="@(() => almacen.Identificador)" />
+                    </div>
+                    </div>
+
+            </RadzenStack>
+            
+
+            
+
+            <RadzenStack>
+                <center>
+                    <RadzenButton Click="Nuevo"Text="Nuevo" Icon="refresh" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton Click="Guardar"Text="Guardar" Icon="save" ButtonStyle="ButtonStyle.Success" />
+                    <RadzenButton Click="Eliminar"Text="Eliminar" Icon="delete" ButtonStyle="ButtonStyle.Danger" />
+                </center>
+            </RadzenStack>
+
+
+            </ChildContent>
+        </RadzenFieldset>
+    </RadzenCard>   
+</EditForm>
+
+@code {
+
+  [Parameter]
+  public int AlmacenId { get; set; }
+
+  private Almacen almacen = new Almacen();
+  
+
+  protected override void OnInitialized()
+  {
+    almacen.AlmacenId = 0;
+    if (AlmacenId > 0)
+    {
+      almacen.AlmacenId = AlmacenId;
+      Buscar();
+    }
+  }
+  void Buscar()
+  {
+    var encontrado = AlmacenBLL.Buscar(almacen.AlmacenId);
+    if (encontrado != null)
+    {
+      almacen = encontrado;
+      this.almacen = encontrado;
+      // notification.ShowNotification("Registro encontrado", NotificationSeverity.Success);
+      Notify.ShowNotification(
+            titulo: "Busqueda",
+            mensaje: "Registro encontrado con exito!",
+            NotificationSeverity.Success);
+    }
+    else
+    {
+      //otification.ShowNotification("Registro no encontrado", NotificationSeverity.Warning);
+      Notify.ShowNotification(
+            titulo: "Error de Busqueda",
+            mensaje: "Registro no encontrado",
+            NotificationSeverity.Error);
+    }
+  }
+  void Nuevo()
+  {
+    this.almacen = new Almacen();
+    //notificacion.ShowNotification("Nueva plantilla.", NotificationSeverity.Success);
+    Notify.ShowNotification(
+            titulo: "Limpieza",
+            mensaje: "Registro limpiado luego de la acción",
+            NotificationSeverity.Info);
+
+  }
+  void Guardar()
+  {
+    try
+    {
+      if(Validar())
+      {
+        if (AlmacenBLL.Guardar(almacen))
+        {
+          Nuevo();
+          Notify.ShowNotification(
+              titulo: "Guardado",
+              mensaje: "Registro guardado con exito!",
+              NotificationSeverity.Success);
+        }
+      }
+      else
+      {
+        Notify.ShowNotification(
+            titulo: "Error al guardar",
+            mensaje: "Revise los campos",
+            NotificationSeverity.Error);
+      }
+    }
+    catch (Exception exception) { }
+  }
+  void Eliminar()
+  {
+    try
+    {
+      if(Validar())
+      {
+        if (AlmacenBLL.Eliminar(almacen))
+        {
+          Nuevo();
+          Notify.ShowNotification(
+              titulo: "Eliminado",
+              mensaje: "Eliminado con exito!",
+              NotificationSeverity.Success);
+        }
+      }
+      else
+      {
+        // notification.ShowNotification("No fue eliminado.", NotificationSeverity.Error);
+        Notify.ShowNotification(
+            titulo: "Eliminado",
+            mensaje: "Error al eliminar este registro",
+            NotificationSeverity.Error);
+      }
+    }
+    catch (Exception exception) { }
+
+  }
+
+  public bool Validar()
+  {
+    return almacen.Identificador != null;
+  }
+}

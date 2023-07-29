@@ -2,6 +2,8 @@
 @page "/C_Articulos"
 
 @inject ArticuloBLL articuloBLL
+@inject AlmacenBLL Almacen
+@inject SuplidorBLL Suplidor
 
 
 <PageTitle>Consulta Articulo.</PageTitle>
@@ -37,7 +39,16 @@
                     <Columns>
                         <RadzenDataGridColumn TItem="Articulo" Property="ArticuloId" Title="ArticuloId#" />
                         <RadzenDataGridColumn TItem="Articulo" Property="Descripcion" Title="Descripcion" />
-                        <RadzenDataGridColumn TItem="Articulo" Property="SuplidorId" Title="Suplidor" />
+                        <RadzenDataGridColumn TItem="Articulo" Filterable="true" Sortable="true"  Frozen="false" Title="Almacen">
+                            <Template Context="Item">
+                                <RadzenText>@((Almacen.Buscar(Item.AlmacenId)).Identificador)</RadzenText>
+                            </Template>
+                         </RadzenDataGridColumn>
+                         <RadzenDataGridColumn TItem="Articulo" Filterable="true" Sortable="true"  Frozen="false" Title="Suplidor">
+                            <Template Context="Item">
+                                <RadzenText>@((Suplidor.Buscar(Item.SuplidorId)).Nombre)</RadzenText>
+                            </Template>
+                         </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="Articulo" Property="CategoriaId" Title="Categoria" />
                         <RadzenDataGridColumn TItem="Articulo" Property="Peso" Title="Peso" />
                         <RadzenDataGridColumn TItem="Articulo" Property="Costo" Title="Costo" />

@@ -1,0 +1,32 @@
+@page "/C_Almacenes"
+
+@inject AlmacenBLL almacenBLL
+<PageTitle>Consulta Almacenes.</PageTitle>
+
+
+
+<RadzenCard>
+    <RadzenFieldset>
+        <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="inventory" class="me-1" /><b>Consulta Almacenes.</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+            AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+            Data= "almacenBLL.GetList(o => true)" TItem="Almacen" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+                <Columns>
+                    
+                    <RadzenDataGridColumn TItem="Almacen" Property="AlmacenId" Title="AlmacenId#"/>
+                    <RadzenDataGridColumn TItem="Almacen" Property="Identificador" Title="Identificador"/>
+            
+                </Columns>
+
+            </RadzenDataGrid>
+        </ChildContent>
+    </RadzenFieldset>
+</RadzenCard>
+
+

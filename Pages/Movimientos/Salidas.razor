@@ -124,7 +124,7 @@
     public void Guardar()
     {
         var articulo = ArticuloBLL.Buscar(salida.ArticuloId);
-        if(salida.Cantidad < articulo.Existencia )
+        if(salida.Cantidad <= articulo.Existencia )
         {
             if(Validar())
             {
