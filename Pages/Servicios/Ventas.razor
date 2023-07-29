@@ -3,6 +3,7 @@
 
 @inject VentaBLL VentaBLL
 @inject PedidoBLL pedidoBLL
+@inject ClienteBLL ClienteBLL
 @inject ArticuloBLL articulos
 @inject DialogService DialogService
 @inject IJSRuntime IJS
@@ -84,14 +85,22 @@
                 <div  class="Entrada col-2">
                  <RadzenDropDown  AllowClear="true" TValue="int" Name="Articulo"
                              FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
-                             class="w-100" Placeholder="Articulo"  Data="articulos.GetList(o => true)" TextProperty="Descripcion"
+                             class="w-100" Placeholder="Articulo"  Data="articulos.GetList(o => o.ArticuloId != 1)" TextProperty="Descripcion"
                              @bind-Value=@detalle.ArticuloId ValueProperty="ArticuloId" style="border-radius: 25px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 3px; height:40px"
+                             />
+                </div>
+                 <div class="Entrada col-3">
+                <RadzenDropDown  AllowClear="true" TValue="int" Name="Cliente"
+                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                             class="w-100" Placeholder="Cliente"  Data="ClienteBLL.GetList(o => true)" TextProperty="Nombre"
+                             @bind-Value=@venta.ClienteId ValueProperty="ClienteId" style="border-radius: 25px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 3px; height:40px"
                              />
                 </div>
                 <div class="Entrada col-2">
                     <RadzenNumeric  ShowUpDown="false" style=" background-color: #D9D9D9; border-color: #D9D9D9;" @bind-Value="detalle.Cantidad"></RadzenNumeric>
                     <RadzenButton style="background-color: #FBCB6E;"ButtonStyle="ButtonStyle.Secondary" Click="AgregarDetalle"><RadzenIcon Icon="playlist_add"/></RadzenButton>
                 </div>
+               
                 <div class="d-flex justify-content-between">
                     <p></p>
                 </div>

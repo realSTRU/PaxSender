@@ -18,7 +18,11 @@
             Data= "almacenBLL.GetList(o => true)" TItem="Almacen" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
 
                 <Columns>
-                    
+                    <RadzenDataGridColumn TItem="Almacen" Filterable="false" Sortable="false"  Frozen="true" Title="Acciones">
+                        <Template Context="Item">
+                            <RadzenLink Path=@($"R_Almacenes/{Item.AlmacenId}") Text="Ver" ><RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Ver" /></RadzenLink>
+                        </Template>
+                    </RadzenDataGridColumn>
                     <RadzenDataGridColumn TItem="Almacen" Property="AlmacenId" Title="AlmacenId#"/>
                     <RadzenDataGridColumn TItem="Almacen" Property="Identificador" Title="Identificador"/>
             

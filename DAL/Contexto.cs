@@ -59,6 +59,19 @@ public class Contexto: DbContext
             
         );
 
+        modelBuilder.Entity<Cliente>().HasData(
+            new Cliente
+            {
+                ClienteId = 1,
+                Nombre ="GENERAL",
+                Celular = "0",
+                Direccion  ="0",
+                
+            }
+            
+            
+        );
+
         modelBuilder.Entity<Suplidor>().HasData(
             new Suplidor
             {

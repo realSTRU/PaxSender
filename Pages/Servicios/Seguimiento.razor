@@ -164,7 +164,44 @@
             
 
         </RadzenTabsItem >
-        
+        <RadzenTabsItem Text="PERECEDEROS" >
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+                    AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+                    Data="Articulos.GetListPerecederos()" TItem="Articulo" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+                    ShowPagingSummary="true">
+
+                    <Columns>
+                        <RadzenDataGridColumn TItem="Articulo" Filterable="false" Sortable="false"  Frozen="true" Title="Acciones">
+                        <Template Context="Item">
+                            <RadzenLink Path=@($"R_Articulos/{Item.ArticuloId}") Text="Ver" ><RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Ver" /></RadzenLink>
+                        </Template>
+                    </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Articulo" Property="ArticuloId" Title="ArticuloId#" />
+                        <RadzenDataGridColumn TItem="Articulo" Property="Descripcion" Title="Descripcion" />
+                        <RadzenDataGridColumn TItem="Articulo" Filterable="true" Sortable="true"  Frozen="false" Title="Almacen">
+                            <Template Context="Item">
+                                <RadzenText>@((AlmacenBLL.Buscar(Item.AlmacenId)).Identificador)</RadzenText>
+                            </Template>
+                         </RadzenDataGridColumn>
+                         <RadzenDataGridColumn TItem="Articulo" Filterable="true" Sortable="true"  Frozen="false" Title="Suplidor">
+                            <Template Context="Item">
+                                <RadzenText>@((suplidores.Buscar(Item.SuplidorId)).Nombre)</RadzenText>
+                            </Template>
+                         </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="Articulo" Property="CategoriaId" Title="Categoria" />
+                        <RadzenDataGridColumn TItem="Articulo" Property="Peso" Title="Peso" />
+                        <RadzenDataGridColumn TItem="Articulo" Property="Costo" Title="Costo" />
+                        <RadzenDataGridColumn TItem="Articulo" Property="Precio" Title="Precio" />
+                        <RadzenDataGridColumn TItem="Articulo" Property="Existencia" Title="Existencia" />
+                        <RadzenDataGridColumn TItem="Articulo" Property="Estado" Title="Estado" />
+                        <RadzenDataGridColumn TItem="Articulo" Property="Fecha_Caducidad" Title="Fecha Caducidad" />
+                    </Columns>
+
+                </RadzenDataGrid>
+            
+            
+
+        </RadzenTabsItem >
 
         </Tabs>
     </RadzenTabs>
@@ -196,9 +233,11 @@
     .Cast<ESTADOENVIO>()
     .ToList();
 
+    public List<Articulo> _Articulos {get; set;} = new List<Articulo>();
+
     protected override void OnInitialized()
     {
-            
+            _Articulos = Articulos.GetList(o=> true);
     }
     
 

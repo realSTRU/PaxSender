@@ -128,8 +128,8 @@ namespace PaxSender.BLL
                             
                         }
                     }
-                    _contexto.Set<EnvioDetalle>().RemoveRange(ventaAnterior.DetalleVenta);
-                    _contexto.Set<EnvioDetalle>().AddRange(venta.DetalleVenta);
+                    _contexto.Set<VentaDetalle>().RemoveRange(ventaAnterior.DetalleVenta);
+                    _contexto.Set<VentaDetalle>().AddRange(venta.DetalleVenta);
                     _contexto.Venta.Update(venta);
                     int cantidad = _contexto.SaveChanges();
                     _contexto.Entry(venta).State= EntityState.Detached;
@@ -154,16 +154,16 @@ namespace PaxSender.BLL
 
             
         }
-        public bool Eliminar(Envio envio)
+        public bool Eliminar(Venta venta)
         {
             try
             {
 
-                if(envio != null)
+                if(venta != null)
                 {
-                    if(envio.DetalleEnvio != null)
+                    if(venta.DetalleVenta != null)
                     {
-                        foreach(var item in envio.DetalleEnvio)
+                        foreach(var item in venta.DetalleVenta)
                         {
                             var articulo = _contexto.Articulo.Find(item.ArticuloId);
                             if(articulo != null)
@@ -174,9 +174,9 @@ namespace PaxSender.BLL
                                 _contexto.Entry(articulo).State = EntityState.Detached;
                             }
                         }
-                        _contexto.Envio.Remove(envio);
+                        _contexto.Venta.Remove(venta);
                         bool Guardo = _contexto.SaveChanges() > 0;
-                        _contexto.Entry(envio).State = EntityState.Detached;
+                        _contexto.Entry(venta).State = EntityState.Detached;
                         return Guardo;
                     }
                     else
@@ -201,24 +201,24 @@ namespace PaxSender.BLL
         }
 
 
-        public Envio Buscar(int EnvioId)
+        public Venta Buscar(int VentaId)
         {
-            return _contexto.Envio
-                .Include(c => c.DetalleEnvio)
-                .Where(c => c.EnvioId == EnvioId && c.Visible == true)
+            return _contexto.Venta
+                .Include(c => c.DetalleVenta)
+                .Where(c => c.VentaId == VentaId && c.Visible == true)
                 .AsNoTracking()
                 .SingleOrDefault();
         }
 
         
-        public List<Envio> GetList()
+        public List<Venta> GetList()
         {
-            return _contexto.Envio.Where(o => o.Visible==true ).AsNoTracking().ToList();
+            return _contexto.Venta.Where(o => o.Visible==true ).AsNoTracking().ToList();
         }
 
-        public List<Envio> FindList(int Buscado)
+        public List<Venta> FindList(int Buscado)
         {
-            return _contexto.Envio.Where(o=>o.Visible == true && o.EnvioId == Buscado).AsNoTracking().ToList();
+            return _contexto.Venta.Where(o=>o.Visible == true && o.VentaId == Buscado).AsNoTracking().ToList();
         }
 
     }

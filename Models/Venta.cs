@@ -12,6 +12,8 @@ namespace PaxSender.Models
         [Key]
         public int VentaId { get; set; }
 
+        public int ClienteId {get; set;}
+
         public DateTime Fecha { get; set; } = DateTime.Now;
 
         public int SuplidorId { get; set; }

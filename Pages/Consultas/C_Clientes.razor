@@ -33,7 +33,13 @@
                     Data="clienteBLL.GetList(o => true)" TItem="Cliente" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
                     ShowPagingSummary="true">
 
+                    
                     <Columns>
+                    <RadzenDataGridColumn TItem="Cliente" Filterable="false" Sortable="false"  Frozen="true" Title="Acciones">
+                        <Template Context="Item">
+                            <RadzenLink Path=@($"R_Clientes/{Item.ClienteId}") Text="Ver" ><RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Ver" /></RadzenLink>
+                        </Template>
+                    </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="Cliente" Property="ClienteId" Title="ClienteId#" />
                         <RadzenDataGridColumn TItem="Cliente" Property="Nombre" Title="Nombre" />
                         <RadzenDataGridColumn TItem="Cliente" Property="Direccion" Title="Direccion" />

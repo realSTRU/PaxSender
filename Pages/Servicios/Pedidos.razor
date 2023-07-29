@@ -4,6 +4,7 @@
 
 @inject PedidoBLL pedidoBLL
 @inject ArticuloBLL articulos
+@inject ClienteBLL ClienteBLL
 @inject DialogService DialogService
 @inject IJSRuntime IJS
 @inject NotificationService notificationService
@@ -84,7 +85,7 @@
                 <div  class="Entrada col-2">
                  <RadzenDropDown  AllowClear="true" TValue="int" Name="Articulo"
                              FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
-                             class="w-100" Placeholder="Articulo"  Data="articulos.GetList(o => true)" TextProperty="Descripcion"
+                             class="w-100" Placeholder="Articulo"  Data="articulos.GetList(o => o.ArticuloId != 1)" TextProperty="Descripcion"
                              @bind-Value=@detalle.ArticuloId ValueProperty="ArticuloId" style="border-radius: 25px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 3px; height:40px"
                              />
                 </div>

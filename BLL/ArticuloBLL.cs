@@ -64,7 +64,7 @@ namespace PaxSender.BLL
         {
             return _contexto.Articulo
             .AsNoTracking()
-            .Where(a => a.Estado.Contains("PERECEDERO"))
+            .Where(a => a.Estado.Contains("PERECEDERO")&& a.ArticuloId != 1)
             .ToList();
         }
 
@@ -82,7 +82,7 @@ namespace PaxSender.BLL
         {
             return _contexto.Articulo
             .AsNoTracking()
-            .Where(a => a.Existencia <= a.Num_Reorden)
+            .Where(a => a.Existencia <= a.Num_Reorden && a.ArticuloId != 1)
             .ToList();
         }
 

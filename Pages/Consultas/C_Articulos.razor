@@ -33,10 +33,15 @@
             <div class="datagrid-container">
                 <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
                     AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-                    Data="articuloBLL.GetList(o => true)" TItem="Articulo" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
+                    Data="articuloBLL.GetList(o => o.ArticuloId != 1)" TItem="Articulo" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or"
                     ShowPagingSummary="true">
 
                     <Columns>
+                        <RadzenDataGridColumn TItem="Articulo" Filterable="false" Sortable="false"  Frozen="true" Title="Acciones">
+                        <Template Context="Item">
+                            <RadzenLink Path=@($"R_Articulos/{Item.ArticuloId}") Text="Ver" ><RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Ver" /></RadzenLink>
+                        </Template>
+                    </RadzenDataGridColumn>
                         <RadzenDataGridColumn TItem="Articulo" Property="ArticuloId" Title="ArticuloId#" />
                         <RadzenDataGridColumn TItem="Articulo" Property="Descripcion" Title="Descripcion" />
                         <RadzenDataGridColumn TItem="Articulo" Filterable="true" Sortable="true"  Frozen="false" Title="Almacen">

@@ -78,7 +78,7 @@
 
                     <div class="row d-flex justify-content-around">
                        <div class="col-4">
-                            <label>Categoría</label>
+                            <label>Suplidor</label>
                             <select @bind="articulo.SuplidorId"  placeholder="Selecciona una suplidor" class="form-select">
                                 @foreach (var item in L_Suplidores)
                                 {
@@ -161,7 +161,7 @@
             Notify.ShowNotification(
             titulo: "Busqueda",
             mensaje: "Registro encontrado con exito!",
-            NotificationSeverity.Error);
+            NotificationSeverity.Success);
         }
         else
         {

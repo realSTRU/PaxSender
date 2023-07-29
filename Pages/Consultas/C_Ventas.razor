@@ -2,6 +2,8 @@
 
 @inject CategoriaBLL categoriaBLL
 @inject VentaBLL Ventas
+@inject SuplidorBLL SuplidorBLL
+@inject ClienteBLL ClienteBLL
 <PageTitle>Consulta Categorias.</PageTitle>
 
 
@@ -19,9 +21,20 @@
             Data= "Ventas.GetList()" TItem="Venta" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
 
                 <Columns>
-                    
+                    <RadzenDataGridColumn TItem="Venta" Filterable="false" Sortable="false"  Frozen="true" Title="Acciones">
+                        <Template Context="Item">
+                            <RadzenLink Path=@($"Ventas/{Item.VentaId}") Text="Ver" ><RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Ver" /></RadzenLink>
+                        </Template>
+                    </RadzenDataGridColumn>
                     <RadzenDataGridColumn TItem="Venta" Property="VentaId" Title="VentaId#"/>
-                    <RadzenDataGridColumn TItem="Venta" Property="Venta" Title="Descripcion"/>
+                    <RadzenDataGridColumn TItem="Venta" Property="Fecha" Title="Fecha"/>
+                    <RadzenDataGridColumn TItem="Venta" Filterable="true" Sortable="true"  Frozen="false" Title="Suplidor">
+                            <Template Context="Item">
+                                <RadzenText>@((SuplidorBLL.Buscar(Item.SuplidorId)).Nombre)</RadzenText>
+                            </Template>
+                         </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="Venta" Property="Total" Title="Total"/>
+    
             
                 </Columns>
 
