@@ -52,7 +52,7 @@
     <RadzenFieldset>
             <HeaderTemplate>
             <span class="d-inline-flex align-items-center align-middle">
-                <RadzenIcon Icon="feed" class="me-1" /><b>Realizar servicio de pedidos</b>
+                <RadzenIcon Icon="feed" class="me-1" /><b> Servicio de pedidos</b>
             </span>
         </HeaderTemplate>
         <ChildContent>
@@ -221,6 +221,7 @@
         if(pedidoEncontrado != null)
         {
             this.pedido = pedidoEncontrado;
+            CalcTotales();
         }
     }
     void CalcTotales()

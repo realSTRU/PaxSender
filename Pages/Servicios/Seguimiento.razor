@@ -5,6 +5,10 @@
 @inject ArticuloBLL Articulos
 @inject EntradaBLL Entradas
 @inject SalidaBLL Salidas
+@inject ClienteBLL ClienteBLL
+@inject SucursalBLL SucursalBLL
+@inject AlmacenBLL AlmacenBLL
+@inject EnvioBLL EnvioBLL
 @inject PedidoBLL Pedidos
 @inject NotificationService Notify
 @inject SuplidorBLL suplidores
@@ -107,25 +111,25 @@
         
 
         </RadzenTabsItem >
-        <RadzenTabsItem Text="Estado de la compra" >
+        <RadzenTabsItem Text="Estado de los envios" >
             <div style="display:flex; justify-items:center;">
             <div class="Entrada" style="display:flex; justify-items:center;">
-                <label for="PedidoId">Pedido#</label>
-                <RadzenNumeric type="PedidoId" id="PedidoId"  Disabled="true" @bind-Value="pedido.PedidoId" name="Descripcion"/>
+                <label for="PedidoId">Envio#</label>
+                <RadzenNumeric type="EnvioId" id="EnvioId"  Disabled="true" @bind-Value="envio.EnvioId" name="Id"/>
             </div>
             
             <div class="input-group Entrada"style="display:flex; justify-items:center;">
                 
                 <div class="input-group ">
                     <label for="Compra">Estado Actual</label>
-                    <select class ="form-select"id="Compra" name="Compra" @bind="pedido.Estado">
-                        @foreach (var item in Estados)
+                    <select class ="form-select"id="envio" name="envio" @bind="envio.Estado">
+                        @foreach (var item in EstadosE)
                         {
                             <option value="@item"> @item</option>
                         }
 
                     </select>
-                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="CambiarEstado" ><RadzenIcon Icon="done" /></RadzenButton>
+                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="CambiarEstadoE" ><RadzenIcon Icon="done" /></RadzenButton>
                 </div>
                 
             </div>
@@ -133,18 +137,27 @@
 
             <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
             AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
-            Data="Pedidos.GetList()" TItem="Pedido" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+            Data="EnvioBLL.GetList()" TItem="Envio" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
 
                 <Columns>
-                        <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="Pedido" Frozen="true" Title="Acciones">
+                        <RadzenDataGridColumn Filterable="false" Sortable="false" TItem="Envio" Frozen="true" Title="Acciones">
                     <Template Context="Item">
-                        <button @onclick="() => Buscar(Item.PedidoId)" style="border:none;" ><RadzenBadge  BadgeStyle="BadgeStyle.Info"  Text="Seleccionar"   /></button>
+                        <button @onclick="() => BuscarE(Item.EnvioId)" style="border:none;" ><RadzenBadge  BadgeStyle="BadgeStyle.Info"  Text="Seleccionar"   /></button>
                     </Template>
                         </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="Pedido" Property="PedidoId" Title="PedidoId#" />
-                    <RadzenDataGridColumn TItem="Pedido" Property="Fecha" Title="Fecha" />
-                    <RadzenDataGridColumn TItem="Pedido" Property="Estado" Title="Estado compra." />
-                    
+                    <RadzenDataGridColumn TItem="Envio" Property="EnvioId" Title="EnvioId#" />
+                    <RadzenDataGridColumn TItem="Envio" Filterable="true" Sortable="true"  Frozen="false" Title="Sucursal">
+                                <Template Context="Item">
+                                    <RadzenText>@((SucursalBLL.Buscar(Item.SucursalId)).Nombre)</RadzenText>
+                                </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn TItem="Envio" Property="Destino" Title="Destino" />
+                    <RadzenDataGridColumn TItem="Envio" Property="Destinatario_Referencia" Title="Referencia" />
+                    <RadzenDataGridColumn TItem="Envio" Property="Total_Envio" Title="Precio Envio" />
+                    <RadzenDataGridColumn TItem="Envio" Property="Fecha" Title="Fecha" />
+                    <RadzenDataGridColumn TItem="Envio" Property="Estado" Title="Estado envio." />
+                        
                 </Columns>
 
             </RadzenDataGrid>
@@ -169,12 +182,18 @@
     [Parameter]
     public int PedidoId {get; set;}
     public Pedido pedido {get; set;} = new Pedido();
+
+    public Envio envio {get; set;} = new Envio();
     public Salida salida { get; set; } = new Salida();
     public Entrada entrada { get; set; } = new Entrada();
     
     public string Estado {get; set;}
     List<ESTADOPEDIDO> Estados = Enum.GetValues(typeof(ESTADOPEDIDO))
     .Cast<ESTADOPEDIDO>()
+    .ToList();
+
+    List<ESTADOENVIO> EstadosE = Enum.GetValues(typeof(ESTADOENVIO))
+    .Cast<ESTADOENVIO>()
     .ToList();
 
     protected override void OnInitialized()
@@ -195,6 +214,18 @@
         {
             
             this.pedido = pedidoEncontrado;
+
+        }
+        
+    }
+
+    private void BuscarE(int Id)
+    {
+        var envioEncontrado = EnvioBLL.Buscar(Id);
+        if (envioEncontrado != null)
+        {
+            
+            this.envio =envioEncontrado;
 
         }
         
@@ -251,11 +282,58 @@
         
 
     }
- 
+    
+    void CambiarEstadoE()
+    {
+        
+        
+        if(ValidarE())
+        {
+            if(this.pedido.Estado.Contains("LIQUIDADO"))
+            {
+
+                
+                EnvioBLL.Guardar(this.envio);
+                Notify.ShowNotification(
+                        titulo: "Cambio de estado!",
+                        mensaje: "Realizado con exito",
+                        NotificationSeverity.Success);
+            }
+            else
+            {
+                EnvioBLL.Guardar(this.envio);
+                Notify.ShowNotification(
+                        titulo: "Cambio de estado!",
+                        mensaje: "Realizado con exito",
+                        NotificationSeverity.Success);
+                
+                
+                
+            
+            }
+
+        }
+        else
+        {
+            Notify.ShowNotification(
+                        titulo: "Error",
+                        mensaje: "No fue posible cambiar el estado, Revise los campos",
+                        NotificationSeverity.Error);
+        }
+
+        
+
+    }
     public bool Validar() 
     {
         var pedidoEncotrado = Pedidos.Buscar(pedido.PedidoId);
         return pedidoEncotrado!= null;
+    }  
+
+    public bool ValidarE() 
+    {
+        var envioEncontrado = EnvioBLL.Buscar(envio.EnvioId);
+        return envioEncontrado!= null;
     }  
 
    

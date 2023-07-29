@@ -16,7 +16,7 @@ public class Envio
 
     public double?  Total { get; set; }
 
-    public double Total_Envio {get; set;}
+    public double? Total_Envio {get; set;}
 
     public string Estado { get; set; }
 
@@ -50,6 +50,10 @@ public class EnvioDetalle
     public int ArticuloId {get; set;}
 
     public int Cantidad {get; set;}
+
+    public double Precio {get; set;}
+
+    public double Costo {get; set;}
 
     public double Peso {get; set;}
 

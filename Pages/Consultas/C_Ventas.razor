@@ -1,0 +1,33 @@
+@page "/C_Ventas"
+
+@inject CategoriaBLL categoriaBLL
+@inject VentaBLL Ventas
+<PageTitle>Consulta Categorias.</PageTitle>
+
+
+
+<RadzenCard>
+    <RadzenFieldset>
+        <HeaderTemplate>
+            <span class="d-inline-flex align-items-center align-middle">
+                <RadzenIcon Icon="emergency" class="me-1" /><b>Consulta Ventas.</b>
+            </span>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced"
+            AllowGrouping="true" AllowSorting="true" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left"
+            Data= "Ventas.GetList()" TItem="Venta" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" ShowPagingSummary="true">
+
+                <Columns>
+                    
+                    <RadzenDataGridColumn TItem="Venta" Property="VentaId" Title="VentaId#"/>
+                    <RadzenDataGridColumn TItem="Venta" Property="Venta" Title="Descripcion"/>
+            
+                </Columns>
+
+            </RadzenDataGrid>
+        </ChildContent>
+    </RadzenFieldset>
+</RadzenCard>
+
+

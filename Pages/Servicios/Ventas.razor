@@ -1,11 +1,9 @@
-@page "/R_Envio"
-@page "/R_Envio/{EnvioId:int}"
+@page "/Ventas"
+@page "/Ventas/{VentaId:int}"
 
+@inject VentaBLL VentaBLL
 @inject PedidoBLL pedidoBLL
 @inject ArticuloBLL articulos
-@inject EnvioBLL EnvioBLL
-@inject SucursalBLL SucursalBLL
-@inject SuplidorBLL SuplidorBLL
 @inject DialogService DialogService
 @inject IJSRuntime IJS
 @inject NotificationService notificationService
@@ -54,7 +52,7 @@
     <RadzenFieldset>
             <HeaderTemplate>
             <span class="d-inline-flex align-items-center align-middle">
-                <RadzenIcon Icon="feed" class="me-1" /><b>Realizar servicio de envios</b>
+                <RadzenIcon Icon="feed" class="me-1" /><b>Servicio de ventas</b>
             </span>
         </HeaderTemplate>
         <ChildContent>
@@ -65,7 +63,7 @@
             <div  class="d-flex justify-content-between">
                 <div class="Entrada">
                     <div class="input-group">
-                        <RadzenNumeric ShowUpDown="false" style=" background-color: #D9D9D9; border-color: #D9D9D9;" @bind-Value="envio.EnvioId"/>
+                        <RadzenNumeric ShowUpDown="false" style=" background-color: #D9D9D9; border-color: #D9D9D9;" @bind-Value="venta.VentaId"/>
                         <RadzenButton style="background-color: #FBCB6E;" ButtonStyle="ButtonStyle.Secondary" Click="Buscar"><RadzenIcon Icon="search"/></RadzenButton>
                     </div>
                 </div>
@@ -75,59 +73,21 @@
                     <div class="Entrada ">
                         <div class="input-group ">
                             <RadzenLabel >Fecha:</RadzenLabel>
-                            <RadzenDatePicker @bind-Value=@envio.Fecha ShowTime="true" HourFormat="12" DateFormat="MM/dd/yyyy" Name="Fecha" />
+                            <RadzenDatePicker @bind-Value=@venta.Fecha ShowTime="true" HourFormat="12" DateFormat="MM/dd/yyyy" Name="Fecha" />
                             <RadzenRequiredValidator Component="Fecha" Text="Nombre es Campo Requerido" Popup=true Style="position: absolute"/>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class = "row">
-                 <div class="col-3">
-                            <input type="text" @bind="envio.Destino" required placeholder="Destino" class="form-control" />
-                        </div>
-                <div class="col-3">
-                            <input type="text" @bind="envio.Destinatario_Referencia" required placeholder="Referencia Destinatario" class="form-control" />
-                        </div>
-                
-                <div  class="col-3">
-                <select Placeholder="Sucursal" style="boder: 1px solid #CED4DA"class ="form-select"id="Sucursal" name="Sucursal" @bind="envio.SucursalId">
-                    @foreach (var item in  L_Sucursal  )
-                    {
-                        <option value="@item.SucursalId"> @item.Nombre</option>
-                    }
-
-                </select>
-                </div>
-                
-            </div>
-            
             <div class="row">
                 <div  class="Entrada col-2">
                  <RadzenDropDown  AllowClear="true" TValue="int" Name="Articulo"
                              FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
-                             class="w-100" Placeholder="Articulo"  Data="articulos.GetList(o => o.ArticuloId == 1)" TextProperty="Descripcion"
+                             class="w-100" Placeholder="Articulo"  Data="articulos.GetList(o => true)" TextProperty="Descripcion"
                              @bind-Value=@detalle.ArticuloId ValueProperty="ArticuloId" style="border-radius: 25px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 3px; height:40px"
                              />
                 </div>
-                <div class="Entrada col-2">
-                    <RadzenNumeric  ShowUpDown="false" style=" background-color: #D9D9D9; border-color: #D9D9D9;" Placeholder="Peso del paquete/LB" @bind-Value="detalle.Peso"></RadzenNumeric>
-                </div>
-                
-                
-                <div class="Entrada col-3">
-                <select Placeholder="Etiqueta" style=" background-color: #D9D9D9; border-color: #D9D9D9;" class ="form-select"id="EstadoEnvio" name="EstadoEnvio" @bind="envio.Etiqueta">
-                    @foreach (var item in  Estados  )
-                    {
-                        <option value="@item"> @item</option>
-                    }
-
-                </select>
-            </div>
-            
-            <div class="Entrada col-2">
-                    <RadzenNumeric Disabled="true" ShowUpDown="false" style=" background-color: #D9D9D9; border-color: #D9D9D9;" Placeholder="Precio del envio" @bind-Value="envio.Total_Envio"></RadzenNumeric>
-            </div>
                 <div class="Entrada col-2">
                     <RadzenNumeric  ShowUpDown="false" style=" background-color: #D9D9D9; border-color: #D9D9D9;" @bind-Value="detalle.Cantidad"></RadzenNumeric>
                     <RadzenButton style="background-color: #FBCB6E;"ButtonStyle="ButtonStyle.Secondary" Click="AgregarDetalle"><RadzenIcon Icon="playlist_add"/></RadzenButton>
@@ -154,22 +114,20 @@
                         <th scope="col">Articulo</th>
                         <th scope="col">Costo</th>
                         <th scope="col">Cantidad</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Peso/LB</th>
+                        <th scope="col">Importe</th>
                         <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     
-                        @foreach(var item in this.envio.DetalleEnvio)
+                        @foreach(var item in this.venta.DetalleVenta)
                         {
                             <tr>
                             <td>@item.ArticuloId</td>
                             <td>@articulos.Buscar(item.ArticuloId).Descripcion</td>
                             <td>@item.Precio</td>
                             <td>@item.Cantidad</td>
-                            <td>@item.Precio</td>
-                            <td>@item.Peso</td>
+                            <td>@item.Importe</td>
                             <td><RadzenButton ButtonStyle="ButtonStyle.Danger" Click="()=>EliminarDetalle(item.DetalleId)" Icon="delete" /></td>
                             </tr>
                         }
@@ -189,7 +147,7 @@
                 <div class="Entrada">
                     <div class="input-group">
                         <RadzenLabel For="Importe">Importe Total:</RadzenLabel>
-                        <RadzenNumeric Disabled="true" ShowUpDown="false" @bind-Value="PesoTotal" Name="Importe" />
+                        <RadzenNumeric Disabled="true" ShowUpDown="false" @bind-Value="ImporteTotal" Name="Importe" />
                     </div>
                 </div>
             </div>
@@ -214,12 +172,12 @@
 @code
 {
     [Parameter]
-    public int EnvioId {get; set;}
+    public int VentaId {get; set;}
     public int CompraRec {get;set;} = 0;
 
-    public Envio envio {get; set;} = new Envio();
+    public Venta venta {get; set;} = new Venta();
 
-    public EnvioDetalle detalle {get; set;} = new EnvioDetalle();
+    public VentaDetalle detalle {get; set;} = new VentaDetalle();
 
     public List<Articulo> L_Articulos {get; set;} = new List<Articulo>();
     
@@ -227,40 +185,28 @@
     public IEnumerable<int> Cantidades{get;set;} 
     public int? CantidadTotal {get;set;}
 
-    public List<Suplidor> L_Suplidores {get; set;} = new List<Suplidor>();
-
-    public List<Sucursal> L_Sucursal {get; set;} = new List<Sucursal>();
-
-    
-
-    public IEnumerable<double?> Peso{get;set;} 
-    public double? PesoTotal {get;set;}
-        List<CONDICION> Estados = Enum.GetValues(typeof(CONDICION))
-        .Cast<CONDICION>()
-        .ToList();
-
+    public IEnumerable<double?> Importes{get;set;} 
+    public double? ImporteTotal {get;set;}
     
     protected override void OnInitialized()
     {
-        L_Articulos = articulos.GetList(o => o.ArticuloId == 1);
-        L_Suplidores = SuplidorBLL.GetList(o => true);
-        L_Sucursal = SucursalBLL.GetList(o => true);
+        L_Articulos = articulos.GetList(o=>true);
 
-        if(EnvioId > 0)
+        if(VentaId > 0)
         {
-            this.envio.EnvioId = EnvioId;
+            this.venta.VentaId = VentaId;
             Buscar();
-            CalcTotales();
         }
-        if(EnvioId==-1)
+        if(VentaId==-1)
         {
             foreach(var articulo in articulos.GetListReorden())
             {
                 detalle.ArticuloId =articulo.ArticuloId;
                 detalle.Cantidad = articulo.Num_Reorden;
+                detalle.Precio = articulo.Costo;
+
                 AgregarDetalle();
             }
-            CalcTotales();
                 
         }
     
@@ -269,27 +215,24 @@
 
     void Buscar()
     {
-        var envioEncontrado = EnvioBLL.Buscar(envio.EnvioId);
+        var ventaEncontrada = VentaBLL.Buscar(venta.VentaId);
         
 
-        if(envioEncontrado != null)
+        if(ventaEncontrada != null)
         {
-            this.envio = envioEncontrado;
+            this.venta = ventaEncontrada;
             CalcTotales();
         }
+
+        
     }
     void CalcTotales()
     {
-        Cantidades= from detalle in envio.DetalleEnvio select detalle.Cantidad;
+        Cantidades= from detalle in venta.DetalleVenta select detalle.Cantidad;
         CantidadTotal = Cantidades.Sum();
 
-        Peso= from detalle in envio.DetalleEnvio select detalle.Peso_Total;
-        PesoTotal = Peso.Sum();
-    }
-
-    void ClacPrecioEnvio()
-    {
-
+        Importes= from detalle in venta.DetalleVenta select detalle.Importe;
+        ImporteTotal = Importes.Sum();
     }
     /*
         public async Task Imprimir()
@@ -301,20 +244,18 @@
     
     void AgregarDetalle()
     {
-         
         if(this.detalle.ArticuloId != null && this.detalle.Cantidad > 0)
         {
             double costoA = articulos.Buscar(this.detalle.ArticuloId).Costo;
             this.detalle.Precio= costoA;
-            this.envio.DetalleEnvio.Add(this.detalle);
-            this.detalle = new EnvioDetalle();
-            foreach(var item in this.envio.DetalleEnvio)
+            this.venta.DetalleVenta.Add(this.detalle);
+            this.detalle = new VentaDetalle();
+            foreach(var item in this.venta.DetalleVenta)
             {
-                this.envio.Total += item.Peso;
+                this.venta.Total += item.Importe;
             }
             
             CalcTotales();
-            envio.Total_Envio = 295.00 * PesoTotal;
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Detalle añadido con exito!", Duration = 4000 });
         }
         else
@@ -326,10 +267,10 @@
 
     public void EliminarDetalle(int DetalleId)
     {
-        this.envio.DetalleEnvio.RemoveAll(d => d.DetalleId == DetalleId);
-        foreach(var item in this.envio.DetalleEnvio)
+        this.venta.DetalleVenta.RemoveAll(d => d.DetalleId == DetalleId);
+        foreach(var item in this.venta.DetalleVenta)
         {
-            this.envio.Total += item.Peso;
+            this.venta.Total += item.Importe;
         }
         CalcTotales();
 
@@ -338,16 +279,16 @@
 
     void Nuevo()
     {
-        this.envio= new Envio();
-        PesoTotal = 0;
+        this.venta= new Venta();
+        ImporteTotal = 0;
         CantidadTotal = 0;
     }
 
     void Eliminar()
     {
-        if(Validar() && envio.EnvioId>0 && this.envio.DetalleEnvio != null  && PesoTotal > 0)
+        if(Validar() && this.venta.DetalleVenta != null  && ImporteTotal > 0)
         {
-            EnvioBLL.Eliminar(this.envio);
+            VentaBLL.Eliminar(this.venta);
             Nuevo();
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Borrado con exito", Duration = 4000 });
         }
@@ -360,10 +301,10 @@
 
     void Guardar()
     {
-        if(Validar() && this.detalle != null && PesoTotal > 0)
+        if(Validar() && this.detalle != null && ImporteTotal > 0)
         {
-            EnvioBLL.Guardar(this.envio);
-            CompraRec = envio.EnvioId;
+            VentaBLL.Guardar(this.venta);
+            CompraRec = venta.VentaId;
             this.Nuevo();
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });
             //ShowInlineDialogPrint();

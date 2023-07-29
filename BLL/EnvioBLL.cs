@@ -154,7 +154,7 @@ namespace PaxSender.BLL
 
             
         }
-        private bool Eliminar(Envio envio)
+        public bool Eliminar(Envio envio)
         {
             try
             {

@@ -30,6 +30,7 @@ builder.Services.AddScoped<SalidaBLL>();//bll
 builder.Services.AddScoped<PedidoBLL>();//bll
 builder.Services.AddScoped<AlmacenBLL>();//bll
 builder.Services.AddScoped<EnvioBLL>();//bll
+builder.Services.AddScoped<Venta>();//bll
 
 
 

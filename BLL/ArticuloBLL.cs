@@ -86,6 +86,8 @@ namespace PaxSender.BLL
             .ToList();
         }
 
+        
+
         public List<Articulo> GetList(Expression<Func<Articulo, bool>> Criterio){
                 List<Articulo> articulos = _contexto.Articulo
                     .AsNoTracking()

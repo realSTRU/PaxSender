@@ -14,6 +14,7 @@ public class Contexto: DbContext
     public DbSet<Entrada> Entrada {get; set;}
     public DbSet<Sucursal> Sucursal {get; set;}
 
+    public DbSet<Venta> Venta {get; set;}
     public DbSet<Almacen> Almacen {get; set;}
 
     public DbSet<Envio> Envio {get; set;}
@@ -39,7 +40,74 @@ public class Contexto: DbContext
             {
                 CategoriaId = 3,
                 Descripcion = "Ropa"
+            },
+             new Categoria
+            {
+                CategoriaId = 4,
+                Descripcion = "PaxSenderCategory"
             }
+
+        );
+
+        modelBuilder.Entity<Almacen>().HasData(
+            new Almacen
+            {
+                AlmacenId = 1,
+                Identificador = "ALMACEN GENERAL"
+            }
+            
+            
+        );
+
+        modelBuilder.Entity<Suplidor>().HasData(
+            new Suplidor
+            {
+                SuplidorId = 1,
+                Nombre = "PaxSenderEssensials",
+                Telefono ="0",
+                Celular ="0",
+                Direccion ="PaxSenderMainDireccion",
+                RNC ="MainRNC",
+                Correo ="PaxSender.Net"
+
+
+            }
+            
+            
+        );
+
+      
+
+        modelBuilder.Entity<Articulo>().HasData(
+            new Articulo
+            {
+                ArticuloId = 1,
+                SuplidorId = 1,
+                AlmacenId = 1,
+                CategoriaId = 4,
+                Descripcion = "PAQUETE",
+                Costo = 0,
+                Precio = 0,
+                Peso = 0,
+                Existencia = 10000000,
+                Fecha_Caducidad = DateTime.Now
+
+
+            }
+            
+            
+        );
+          modelBuilder.Entity<Sucursal>().HasData(
+            new Sucursal
+            {
+                
+                SucursalId =1,
+                Nombre ="Principal DO",
+                Direccion = "NAGUA RD"
+
+            }
+            
+            
         );
     }
 }

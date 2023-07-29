@@ -1,14 +1,16 @@
 
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaxSender.Models
 {
-    public class Transacciones
+
+    public class Venta
     {
+
         [Key]
-        public int CompraId { get; set; }
+        public int VentaId { get; set; }
 
         public DateTime Fecha { get; set; } = DateTime.Now;
 
@@ -17,33 +19,33 @@ namespace PaxSender.Models
         public double? Total { get; set; } = 0;
 
         public bool Visible { get; set; } = true;
-
-
-        public string Estado {get; set;} = "Esperando";
-
         
         [ForeignKey("CompraId")]
-        public List<ComprasDetalle> Detalle { get; set; } = new List<ComprasDetalle>();
+        public List<VentaDetalle> DetalleVenta { get; set; } = new List<VentaDetalle>();
+
+
 
     }
 
-    public class Venta : Transacciones{}
-    public class Compra : Transacciones{}
-
-    public class ComprasDetalle
+    public class VentaDetalle
     {
         [Key]
         public int DetalleId { get; set; }
         public int CompraId { get; set; }
         public int ArticuloId { get; set; }
-        public int? cantidad { get; set; }
-        public double? costo { get; set; }
+        public int Cantidad { get; set; }
+        public double? Precio { get; set; }
         public bool Visible { get; set; }
         [NotMapped]
         public double? Importe
         {
-            get { return cantidad * costo; }
+            get { return Cantidad * Precio; }
         }
 
     }
+
 }
+
+
+
+
