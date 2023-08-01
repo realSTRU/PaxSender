@@ -358,14 +358,22 @@
         }
     }
 
+    async Task Factura()
+    {
+        await EnvioPrint.ImprimirFacturaAsync(envio);
+        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });
+    }
+
     void Guardar()
     {
+        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Imprimiendo factura", Detail = "Espere el recibo", Duration = 11000 });
         if(Validar() && this.detalle != null && PesoTotal > 0)
         {
             EnvioBLL.Guardar(this.envio);
             CompraRec = envio.EnvioId;
+            Factura();
             this.Nuevo();
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });
+            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 2000 });
             //ShowInlineDialogPrint();
         }
         else
