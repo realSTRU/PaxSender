@@ -9,12 +9,13 @@ using System.IO;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 using System.Threading.Tasks;
+using PaxSender.BLL;
 
-public class EnvioPrint
+public class CompraPrint
 {
-    public static async Task ImprimirFacturaAsync(Envio envio, string Nombre, string Cliente)
+    public static async Task ImprimirFacturaAsync(Venta compra, string Cliente)
     {
-        string factura = GenerarContenidoFactura(envio, Nombre, Cliente); // Implementa la lógica para generar el contenido de la factura
+        string factura = GenerarContenidoFactura(compra, Cliente); // Implementa la lógica para generar el contenido de la factura
 
         // Conectarse a la impresora a través de Bluetooth
         BluetoothDeviceInfo printerDevice = await FindBluetoothPrinterAsync("MTP-2"); // Reemplaza "NombreDeTuImpresora" con el nombre real de tu impresora
@@ -54,7 +55,7 @@ public class EnvioPrint
         await stream.WriteAsync(data, 0, data.Length);
     }
 
-    private static string GenerarContenidoFactura(Envio envio, string Sucursal, string Cliente)
+    private static string GenerarContenidoFactura(Venta compra,string Cliente)
     {
         // Implementa la lógica para generar el contenido de la factura como una cadena de texto
         // Puedes utilizar un StringBuilder para facilitar la construcción del contenido
@@ -65,24 +66,20 @@ public class EnvioPrint
         contenido.AppendLine("        Factura");
         contenido.AppendLine("=============================");
         contenido.AppendLine($"Cliente:{Cliente}");
-        contenido.AppendLine($"Referencia:{envio.Destinatario_Referencia}");
-        contenido.AppendLine($"Sucursal: {Sucursal}");
-        contenido.AppendLine($"Direccion: {envio.Destino}");
-        contenido.AppendLine($"Fecha: {envio.Fecha.ToString()}");
-        contenido.AppendLine($"Numero de factura:{envio.EnvioId.ToString()}");
-        contenido.AppendLine($"Precio Libra: $295.00");
+        contenido.AppendLine($"Fecha: {compra.Fecha.ToString()}");
+        contenido.AppendLine($"Numero de factura:{compra.VentaId.ToString()}");
         contenido.AppendLine("=============================");
-        contenido.AppendLine("Descripcion   Cantidad   Peso");
-        foreach (var item in envio.DetalleEnvio)
+        contenido.AppendLine("Descripcion   Cantidad   Precio");
+        
+        foreach (var item in compra.DetalleVenta)
         {
-            contenido.AppendLine($"PAQUETE          {item.Cantidad}        {item.Peso}");
-            libra = item.Cantidad * item.Peso;
+            contenido.AppendLine($"{item.ArticuloId}               {item.Cantidad}        {item.Precio}");
         }
         contenido.AppendLine("=============================");
-        contenido.AppendLine($"Peso total:              LB:{libra}");
-        contenido.AppendLine($"Total:                   ${envio.Total_Envio}");
+        contenido.AppendLine($"Total:                   ${compra.Total}");
         contenido.AppendLine("=============================");
-        contenido.AppendLine("Constancia de servicio de envio");
+        contenido.AppendLine("Gracias por su compra!");
+        contenido.AppendLine("Vuelva pronto");
         return contenido.ToString();
     }
 }

@@ -89,7 +89,7 @@
                              @bind-Value=@detalle.ArticuloId ValueProperty="ArticuloId" style="border-radius: 25px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 3px; height:40px"
                              />
                 </div>
-                 <div class="Entrada col-3">
+                <div class="Entrada col-3">
                 <RadzenDropDown  AllowClear="true" TValue="int" Name="Cliente"
                              FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
                              class="w-100" Placeholder="Cliente"  Data="ClienteBLL.GetList(o => true)" TextProperty="Nombre"
@@ -121,7 +121,7 @@
                     <tr>
                         <th scope="col">#ArticuloId</th>
                         <th scope="col">Articulo</th>
-                        <th scope="col">Costo</th>
+                        <th scope="col">Precio</th>
                         <th scope="col">Cantidad</th>
                         <th scope="col">Importe</th>
                         <th scope="col">Eliminar</th>
@@ -253,24 +253,34 @@
     
     void AgregarDetalle()
     {
-        if(this.detalle.ArticuloId != null && this.detalle.Cantidad > 0)
+        var articulo = articulos.Buscar(detalle.ArticuloId);
+        if(this.detalle.Cantidad <= articulo.Existencia)
         {
-            double costoA = articulos.Buscar(this.detalle.ArticuloId).Costo;
-            this.detalle.Precio= costoA;
-            this.venta.DetalleVenta.Add(this.detalle);
-            this.detalle = new VentaDetalle();
-            foreach(var item in this.venta.DetalleVenta)
+            if(this.detalle.ArticuloId != null && this.detalle.Cantidad > 0)
             {
-                this.venta.Total += item.Importe;
+                double? precioA = articulos.Buscar(this.detalle.ArticuloId).Precio;
+                this.detalle.Precio= precioA;
+                this.venta.DetalleVenta.Add(this.detalle);
+                this.detalle = new VentaDetalle();
+                foreach(var item in this.venta.DetalleVenta)
+                {
+                    this.venta.Total += item.Importe;
+                }
+                
+                CalcTotales();
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Detalle añadido con exito!", Duration = 4000 });
             }
-            
-            CalcTotales();
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Detalle añadido con exito!", Duration = 4000 });
+            else
+            {
+                ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error al agregar detalle", Detail = "Campo de detalle vacio", Duration = 4000 });
+            }
         }
         else
         {
-            ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error al agregar detalle", Detail = "Campo de detalle vacio", Duration = 4000 });
+             ShowNotification(new NotificationMessage {Severity= NotificationSeverity.Error, Summary ="Error de existencia"
+            , Detail =$"Solo restan {articulo.Existencia} debes de elegir una cantidad valida."});
         }
+        
         
     }
 
@@ -308,11 +318,22 @@
         }
     }
 
+
+    async Task Factura()
+    {
+
+        string cliente = ClienteBLL.Buscar(venta.ClienteId).Nombre;
+        await CompraPrint.ImprimirFacturaAsync(venta,cliente);
+        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });
+    }
     void Guardar()
     {
+        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Imprimiendo factura", Detail = "Espere el recibo", Duration = 20000 });
         if(Validar() && this.detalle != null && ImporteTotal > 0)
         {
+            
             VentaBLL.Guardar(this.venta);
+            Factura();
             CompraRec = venta.VentaId;
             this.Nuevo();
             ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });

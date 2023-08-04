@@ -28,11 +28,15 @@
                     </RadzenDataGridColumn>
                     <RadzenDataGridColumn TItem="Venta" Property="VentaId" Title="VentaId#"/>
                     <RadzenDataGridColumn TItem="Venta" Property="Fecha" Title="Fecha"/>
-                    <RadzenDataGridColumn TItem="Venta" Filterable="true" Sortable="true"  Frozen="false" Title="Suplidor">
+                    
+                    <RadzenDataGridColumn TItem="Venta" Filterable="true" Sortable="true"  Frozen="false" Title="Cliente">
                             <Template Context="Item">
-                                <RadzenText>@((SuplidorBLL.Buscar(Item.SuplidorId)).Nombre)</RadzenText>
+                                <RadzenText>@((ClienteBLL.Buscar(Item.ClienteId)).Nombre)</RadzenText>
                             </Template>
-                         </RadzenDataGridColumn>
+                    </RadzenDataGridColumn>
+                    
+                    
+                   
                     <RadzenDataGridColumn TItem="Venta" Property="Total" Title="Total"/>
     
             

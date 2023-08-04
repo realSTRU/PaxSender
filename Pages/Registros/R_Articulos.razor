@@ -180,8 +180,7 @@
 
     public void Guardar()
     {
-        try
-        {
+
             if (!Validar())
             {
                 Notify.ShowNotification(
@@ -210,8 +209,8 @@
                         NotificationSeverity.Error);
                 }
             }
-        }
-        catch (Exception excepcion) { }
+        
+       
     }
 
     public void Eliminar()

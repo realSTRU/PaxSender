@@ -3,6 +3,7 @@
 
 @inject PedidoBLL pedidoBLL
 @inject ArticuloBLL articulos
+@inject ClienteBLL ClienteBLL
 @inject EnvioBLL EnvioBLL
 @inject SucursalBLL SucursalBLL
 @inject SuplidorBLL SuplidorBLL
@@ -90,14 +91,19 @@
                             <input type="text" @bind="envio.Destinatario_Referencia" required placeholder="Referencia Destinatario" class="form-control" />
                         </div>
                 
-                <div  class="col-3">
-                <select Placeholder="Sucursal" style="boder: 1px solid #CED4DA"class ="form-select"id="Sucursal" name="Sucursal" @bind="envio.SucursalId">
-                    @foreach (var item in  L_Sucursal  )
-                    {
-                        <option value="@item.SucursalId"> @item.Nombre</option>
-                    }
-
-                </select>
+                <div class="Entrada col-3">
+                <RadzenDropDown  AllowClear="true" TValue="int" Name="Succursal"
+                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                             class="w-100" Placeholder="Sucursal"  Data="SucursalBLL.GetList(o => true)" TextProperty="Nombre"
+                             @bind-Value=@envio.SucursalId ValueProperty="SucursalId" style="border-radius: 25px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 3px; height:40px"
+                             />
+                </div>
+                <div class="Entrada col-3">
+                <RadzenDropDown  AllowClear="true" TValue="int" Name="Cliente"
+                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true"
+                             class="w-100" Placeholder="Cliente"  Data="ClienteBLL.GetList(o => true)" TextProperty="Nombre"
+                             @bind-Value=@envio.ClienteId ValueProperty="ClienteId" style="border-radius: 25px; background-color: #D9D9D9; border-color: #D9D9D9; border: 15px; margin: 3px; height:40px"
+                             />
                 </div>
                 
             </div>
@@ -116,7 +122,7 @@
                 
                 
                 <div class="Entrada col-3">
-                <select Placeholder="Etiqueta" style=" background-color: #D9D9D9; border-color: #D9D9D9;" class ="form-select"id="EstadoEnvio" name="EstadoEnvio" @bind="envio.Etiqueta">
+                <select Placeholder="Etiqueta" style=" background-color: #D9D9D9; border-color: #D9D9D9;" class ="form-select"id="EstadoEnvio" name="EstadoEnvio" @bind="detalle.Etiqueta">
                     @foreach (var item in  Estados  )
                     {
                         <option value="@item"> @item</option>
@@ -156,6 +162,7 @@
                         <th scope="col">Cantidad</th>
                         <th scope="col">Precio</th>
                         <th scope="col">Peso/LB</th>
+                        <th scope="col">Condición</th>
                         <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
@@ -170,6 +177,8 @@
                             <td>@item.Cantidad</td>
                             <td>@item.Precio</td>
                             <td>@item.Peso</td>
+                            <td>@item.Etiqueta</td>
+
                             <td><RadzenButton ButtonStyle="ButtonStyle.Danger" Click="()=>EliminarDetalle(item.DetalleId)" Icon="delete" /></td>
                             </tr>
                         }
@@ -360,13 +369,15 @@
 
     async Task Factura()
     {
-        await EnvioPrint.ImprimirFacturaAsync(envio);
+        string nombre = SucursalBLL.Buscar(envio.SucursalId).Nombre;
+        string cliente = ClienteBLL.Buscar(envio.ClienteId).Nombre;
+        await EnvioPrint.ImprimirFacturaAsync(envio, nombre, cliente);
         ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro Actualizado", Detail = "Guardado con Exito", Duration = 4000 });
     }
 
     void Guardar()
     {
-        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Imprimiendo factura", Detail = "Espere el recibo", Duration = 11000 });
+        ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Info, Summary = "Imprimiendo factura", Detail = "Espere el recibo", Duration = 20000 });
         if(Validar() && this.detalle != null && PesoTotal > 0)
         {
             EnvioBLL.Guardar(this.envio);

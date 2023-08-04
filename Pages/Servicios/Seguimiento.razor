@@ -153,6 +153,11 @@
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn TItem="Envio" Property="Destino" Title="Destino" />
+                    <RadzenDataGridColumn TItem="Envio" Filterable="true" Sortable="true"  Frozen="false" Title="Cliente">
+                            <Template Context="Item">
+                                <RadzenText>@((ClienteBLL.Buscar(Item.ClienteId)).Nombre)</RadzenText>
+                            </Template>
+                    </RadzenDataGridColumn>
                     <RadzenDataGridColumn TItem="Envio" Property="Destinatario_Referencia" Title="Referencia" />
                     <RadzenDataGridColumn TItem="Envio" Property="Total_Envio" Title="Precio Envio" />
                     <RadzenDataGridColumn TItem="Envio" Property="Fecha" Title="Fecha" />
@@ -294,7 +299,7 @@
                 Notify.ShowNotification(
                         titulo: "Cambio de estado!",
                         mensaje: "Realizado con exito",
-                        NotificationSeverity.Error);
+                        NotificationSeverity.Success);
             }
             else
             {
@@ -302,7 +307,7 @@
                 Notify.ShowNotification(
                         titulo: "Cambio de estado!",
                         mensaje: "Realizado con exito",
-                        NotificationSeverity.Error);
+                        NotificationSeverity.Success);
                 
                 
                 

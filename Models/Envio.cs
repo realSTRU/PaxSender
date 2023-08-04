@@ -20,8 +20,6 @@ public class Envio
 
     public string Estado { get; set; }
 
-    public string Etiqueta {get; set;}
-
     public string Destinatario_Referencia {get; set;}
 
     public bool Visible {get; set;}
@@ -56,6 +54,7 @@ public class EnvioDetalle
     public double Costo {get; set;}
 
     public double Peso {get; set;}
+    public string Etiqueta {get; set;}
 
     public double? Peso_Total {
 
