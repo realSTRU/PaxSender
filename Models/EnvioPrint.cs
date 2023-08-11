@@ -60,6 +60,7 @@ public class EnvioPrint
         // Puedes utilizar un StringBuilder para facilitar la construcción del contenido
         // Por ejemplo:
         double libra = 0;
+        double suma = 0;
         StringBuilder contenido = new StringBuilder();
         contenido.AppendLine("=============================");
         contenido.AppendLine("        Factura");
@@ -77,9 +78,10 @@ public class EnvioPrint
         {
             contenido.AppendLine($"PAQUETE          {item.Cantidad}        {item.Peso}");
             libra = item.Cantidad * item.Peso;
+            suma += libra;
         }
         contenido.AppendLine("=============================");
-        contenido.AppendLine($"Peso total:              LB:{libra}");
+        contenido.AppendLine($"Peso total:              LB:{suma}");
         contenido.AppendLine($"Total:                   ${envio.Total_Envio}");
         contenido.AppendLine("=============================");
         contenido.AppendLine("Constancia de servicio de envio");

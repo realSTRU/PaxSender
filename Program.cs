@@ -1,5 +1,5 @@
 global using PaxSender.Models;
-
+global using PaxSender;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -17,6 +17,13 @@ var ConStr = builder.Configuration.GetConnectionString("ConStr");//conexion stri
 builder.Services.AddDbContext<Contexto>(con =>
   con.UseSqlite(ConStr)  // contexto
 );
+builder.Services.AddDbContext<PaxSenderContext>(con =>
+  con.UseSqlite(ConStr)  // contexto
+);
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PaxSenderContext>();
+
+
 
 builder.Services.AddTransient<SuplidorBLL>();// bll
 builder.Services.AddTransient<CategoriaBLL>();// bll
@@ -31,6 +38,7 @@ builder.Services.AddScoped<PedidoBLL>();//bll
 builder.Services.AddScoped<AlmacenBLL>();//bll
 builder.Services.AddScoped<EnvioBLL>();//bll
 builder.Services.AddScoped<VentaBLL>();//bll
+builder.Services.AddScoped<AppStateService>();//Service
 
 
 
@@ -53,7 +61,20 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+
+
+
+app.UseAuthentication();
 app.UseRouting();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
+
+
+
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

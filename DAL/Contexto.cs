@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PaxSender.Models;
 
 namespace PaxSender.Data;
-public class Contexto: DbContext
+public class Contexto : DbContext
 {
     public DbSet<Suplidor> Suplidor { get; set; }
     public DbSet<Categoria> Categoria { get; set; }
@@ -25,6 +27,7 @@ public class Contexto: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+       
         modelBuilder.Entity<Categoria>().HasData(
             new Categoria
             {

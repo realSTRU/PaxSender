@@ -9,96 +9,105 @@
 
 <RadzenNotification></RadzenNotification>
  <RadzenDialog />
+ <CascadingAuthenticationState>
+     <AuthorizeView>
+         <Authorized>
+            <RadzenLayout style="height: 100vh; background-image: url('/images/Paxxx.png'); background-size: cover; background-attachment: fixed; background-repeat: no-repeat; ">
 
-<RadzenLayout style="height: 100vh; background-image: url('/images/Paxxx.png'); background-size: cover; background-attachment: fixed; background-repeat: no-repeat; ">
-    
-    <RadzenHeader class="rz-background-color-warning-light" style="display: flex; justify-content: space-between; border:none;">
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" class="rz-background-color-warning-light" Gap="0">
-            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)"   style= "border:none;  border-top-right-radius: 25px; border-bottom-right-radius: 25px;"/>
-            
-        </RadzenStack>
+                <RadzenHeader class="rz-background-color-warning-light" style="display: flex; justify-content: space-between; border:none;">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" class="rz-background-color-warning-light" Gap="0">
+                        <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" style="border:none;  border-top-right-radius: 25px; border-bottom-right-radius: 25px;" />
 
-    <RadzenProfileMenu style=" border:none;"class="rz-background-color-warning-light">
-        <Template>
-            <RadzenLabel Text="Usuario" style="color:rgb(255, 255, 255)" />
-        </Template>
-        <ChildContent>
-            <RadzenProfileMenuItem Text="Perfil"  ></RadzenProfileMenuItem>
-            <RadzenProfileMenuItem Text="Cerrar Sesion"  ></RadzenProfileMenuItem>
-        </ChildContent>
-    </RadzenProfileMenu>
+                    </RadzenStack>
 
-
-    </RadzenHeader>
-
-    <RadzenSidebar @bind-Expanded="@sidebar1Expanded"style="background-color:#28363c;" >
-        
-        
-        <RadzenPanelMenu style="background-color:#28363c;" Multiple="false" >
-                    
-                    <RadzenPanelMenuItem Selected="true"  icon="outlined_flag" style="background-color:#35A0D7;" Path="/" Text="Home" ></RadzenPanelMenuItem>
-                    <RadzenPanelMenuItem Selected="true"  icon="person_pin" style="background-color:#28363c;" Text="Clientes" >
-                        <RadzenPanelMenuItem Selected="true"  icon="search" Text="Consulta" Path="C_Clientes" />
-                        <RadzenPanelMenuItem  Selected="true" icon="add" Text="Registro" Path="R_Clientes" />
-                    </RadzenPanelMenuItem>
-
-                    <RadzenPanelMenuItem Selected="true" icon="local_shipping"  style="background-color:#28363c;" Text="Suplidores" >
-                        <RadzenPanelMenuItem Selected="true"  icon="search"  Text="Consulta" Path="C_Suplidores" />
-                        <RadzenPanelMenuItem Selected="true"  icon="add" Text="Registro" Path="R_Suplidores" />
-                    </RadzenPanelMenuItem>
-
-                    <RadzenPanelMenuItem Selected="true"  icon="inventory" style="background-color:#28363c;" Text="Articulos" >
-                        <RadzenPanelMenuItem Selected="true"   icon="search" Text="Consulta" Path="C_Articulos" />
-                        <RadzenPanelMenuItem Selected="true"   icon="add" Text="Registro" Path="R_Articulos" />
-
-                    </RadzenPanelMenuItem>
-
-                     <RadzenPanelMenuItem Selected="true"  icon="category" style="background-color:#28363c;" Text="Categorias" >
-                        <RadzenPanelMenuItem Selected="true"  icon="search" Text="Consulta" Path="C_Categorias" />
-                        <RadzenPanelMenuItem  Selected="true" icon="add" Text="Registro" Path="R_Categorias" />
-                    </RadzenPanelMenuItem>
-
-                    <RadzenPanelMenuItem Selected="true"  icon="inventory" style="background-color:#28363c;" Text="Almacenes" >
-                        <RadzenPanelMenuItem Selected="true"  icon="search" Text="Consulta" Path="/C_Almacenes" />
-                        <RadzenPanelMenuItem  Selected="true" icon="add" Text="Registro" Path="R_Almacenes" />
-                    </RadzenPanelMenuItem>
-
-                    <RadzenPanelMenuItem Selected="true"  icon="museum" style="background-color:#28363c;" Text="Sucursales" >
-                        <RadzenPanelMenuItem Selected="true"  icon="search" Text="Consulta" Path="C_Sucursal" />
-                        <RadzenPanelMenuItem  Selected="true" icon="add" Text="Registro" Path="R_Sucursal" />
-                    </RadzenPanelMenuItem>
-
-                    <RadzenPanelMenuItem Selected="true"  icon="sync_alt" style="background-color:#28363c;" Text="Movimientos" >
-                        <RadzenPanelMenuItem Selected="true"  icon="add_task" Text="Entradas" Path="Entradas" />
-                        <RadzenPanelMenuItem  Selected="true" icon="sell" Text="Salidas" Path="Salidas" />
-                        <RadzenPanelMenuItem  Selected="true" icon="offline_pin" Text="Seguimientos" Path="Seguimientos" />
-
-                    </RadzenPanelMenuItem>
-
-                    <RadzenPanelMenuItem Selected="true"  icon="receipt_long" style="background-color:#28363c;" Text="Servicios" >
-                        <RadzenPanelMenuItem  Selected="true" icon="inventory" Text="Pedidos" Path="R_Pedidos" />
-                        <RadzenPanelMenuItem  Selected="true" icon="local_shipping" Text="Envios" Path="R_Envio" />
-                        <RadzenPanelMenuItem  Selected="true" icon="local_shipping" Text="Ventas" Path="Ventas" />
-                        <RadzenPanelMenuItem  Selected="true" icon="local_shipping" Text="Consulta Ventas" Path="C_Ventas" />
+                    <RadzenProfileMenu style=" border:none;" class="rz-background-color-warning-light">
+                        <Template>
+                            <RadzenLabel Text="Usuario" style="color:rgb(255, 255, 255)" />
+                        </Template>
+                        <ChildContent>
+                            <RadzenProfileMenuItem Text="Perfil" Path="Identity/Account/Manage"></RadzenProfileMenuItem>
+                            <RadzenProfileMenuItem Text="Cerrar Sesion" Path="Identity/Account/Logout"></RadzenProfileMenuItem>
+                        </ChildContent>
+                    </RadzenProfileMenu>
 
 
-                    </RadzenPanelMenuItem>
+                </RadzenHeader>
+
+                <RadzenSidebar @bind-Expanded="@sidebar1Expanded" style="background-color:#28363c;">
+
+
+                    <RadzenPanelMenu style="background-color:#28363c;" Multiple="false">
+
+                        <RadzenPanelMenuItem Selected="true" icon="outlined_flag" style="background-color:#35A0D7;" Path="/" Text="Home"></RadzenPanelMenuItem>
+                        <RadzenPanelMenuItem Selected="true" icon="person_pin" style="background-color:#28363c;" Text="Clientes">
+                            <RadzenPanelMenuItem Selected="true" icon="search" Text="Consulta" Path="C_Clientes" />
+                            <RadzenPanelMenuItem Selected="true" icon="add" Text="Registro" Path="R_Clientes" />
+                        </RadzenPanelMenuItem>
+
+                        <RadzenPanelMenuItem Selected="true" icon="local_shipping" style="background-color:#28363c;" Text="Suplidores">
+                            <RadzenPanelMenuItem Selected="true" icon="search" Text="Consulta" Path="C_Suplidores" />
+                            <RadzenPanelMenuItem Selected="true" icon="add" Text="Registro" Path="R_Suplidores" />
+                        </RadzenPanelMenuItem>
+
+                        <RadzenPanelMenuItem Selected="true" icon="inventory" style="background-color:#28363c;" Text="Articulos">
+                            <RadzenPanelMenuItem Selected="true" icon="search" Text="Consulta" Path="C_Articulos" />
+                            <RadzenPanelMenuItem Selected="true" icon="add" Text="Registro" Path="R_Articulos" />
+
+                        </RadzenPanelMenuItem>
+
+                        <RadzenPanelMenuItem Selected="true" icon="category" style="background-color:#28363c;" Text="Categorias">
+                            <RadzenPanelMenuItem Selected="true" icon="search" Text="Consulta" Path="C_Categorias" />
+                            <RadzenPanelMenuItem Selected="true" icon="add" Text="Registro" Path="R_Categorias" />
+                        </RadzenPanelMenuItem>
+
+                        <RadzenPanelMenuItem Selected="true" icon="inventory" style="background-color:#28363c;" Text="Almacenes">
+                            <RadzenPanelMenuItem Selected="true" icon="search" Text="Consulta" Path="/C_Almacenes" />
+                            <RadzenPanelMenuItem Selected="true" icon="add" Text="Registro" Path="R_Almacenes" />
+                        </RadzenPanelMenuItem>
+
+                        <RadzenPanelMenuItem Selected="true" icon="museum" style="background-color:#28363c;" Text="Sucursales">
+                            <RadzenPanelMenuItem Selected="true" icon="search" Text="Consulta" Path="C_Sucursal" />
+                            <RadzenPanelMenuItem Selected="true" icon="add" Text="Registro" Path="R_Sucursal" />
+                        </RadzenPanelMenuItem>
+
+                        <RadzenPanelMenuItem Selected="true" icon="sync_alt" style="background-color:#28363c;" Text="Movimientos">
+                            <RadzenPanelMenuItem Selected="true" icon="add_task" Text="Entradas" Path="Entradas" />
+                            <RadzenPanelMenuItem Selected="true" icon="sell" Text="Salidas" Path="Salidas" />
+                            <RadzenPanelMenuItem Selected="true" icon="offline_pin" Text="Seguimientos" Path="Seguimientos" />
+
+                        </RadzenPanelMenuItem>
+
+                        <RadzenPanelMenuItem Selected="true" icon="receipt_long" style="background-color:#28363c;" Text="Servicios">
+                            <RadzenPanelMenuItem Selected="true" icon="inventory" Text="Pedidos" Path="R_Pedidos" />
+                            <RadzenPanelMenuItem Selected="true" icon="local_shipping" Text="Envios" Path="R_Envio" />
+                            <RadzenPanelMenuItem Selected="true" icon="local_shipping" Text="Ventas" Path="Ventas" />
+                            <RadzenPanelMenuItem Selected="true" icon="local_shipping" Text="Consulta Ventas" Path="C_Ventas" />
+
+
+                        </RadzenPanelMenuItem>
 
 
 
 
-                    
 
-        </RadzenPanelMenu>
-        <div class="rz-p-4">
-        </div>
-    </RadzenSidebar>
-    <RadzenBody>
-        <div class="rz-p-4">
-            @Body
-        </div>
-    </RadzenBody>
-</RadzenLayout>
+
+                    </RadzenPanelMenu>
+                    <div class="rz-p-4">
+                    </div>
+                </RadzenSidebar>
+                <RadzenBody>
+                    <div class="rz-p-4">
+                        @Body
+                    </div>
+                </RadzenBody>
+            </RadzenLayout>
+         </Authorized>
+         <NotAuthorized>
+               <MainPage/>
+         </NotAuthorized>
+     </AuthorizeView>
+ </CascadingAuthenticationState>
+
 
 @code {
     bool sidebar1Expanded = true;

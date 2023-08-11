@@ -1,15 +1,23 @@
-﻿
+﻿@inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @using System.Threading.Tasks
 @using PaxSender
 @using Radzen.Blazor
+@inherits ComponentBase
+@inject AppStateService AppState
 
-@if (isLoading)
+
+@if(isLoading)
 {
-    <LoadingScreen></LoadingScreen>
+
+  <LoadingScreen></LoadingScreen>
+
+    
+
 }
 else
-{
+{   
+
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -22,6 +30,7 @@ else
             </LayoutView>
         </NotFound>
     </Router>
+    
 }
 
 
@@ -29,6 +38,9 @@ else
 {
      bool isLoading = true;
 
+    private void NavigateToIndex(){
+        NavigationManager.NavigateTo("/");
+    }
     protected override async Task OnInitializedAsync()
     {
         // Simula un tiempo de carga de 3 segundos
@@ -37,4 +49,5 @@ else
         isLoading = false; // Desactivar el loading screen después de 3 segundos
 
     }
+    
 }
